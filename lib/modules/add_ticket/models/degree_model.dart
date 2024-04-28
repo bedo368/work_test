@@ -1,10 +1,12 @@
-class DegreeModel {
+import 'package:equatable/equatable.dart';
+
+class DegreeModel extends Equatable {
   final String degreeID;
   final String name;
   final String category;
   final String createdAt;
 
-  DegreeModel({
+  const DegreeModel({
     required this.degreeID,
     required this.name,
     required this.category,
@@ -19,6 +21,9 @@ class DegreeModel {
       createdAt: json['CreatedAt'],
     );
   }
+
+  @override
+  List<Object?> get props => [degreeID];
 }
 
 class DegreeListModel {

@@ -25,3 +25,8 @@ final class AddTicktErrorState extends AddTicktState {
 }
 
 final class AddTicktWithTransferIdSuccess extends AddTicktState {}
+
+
+final class AddTicktWithDegreeIdSuccess extends AddTicktState {}
+
+final class AddTicktWithDegreeIdOrTransferIdLoading extends AddTicktState {}

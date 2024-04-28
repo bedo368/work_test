@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_1/modules/aditinal/controllers/cubit/addinal_vist_cubit.dart';
 import 'package:flutter_application_1/modules/aditinal/views/widgets/adintal_item_widget.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BuildAdinalList extends StatelessWidget {
   const BuildAdinalList({

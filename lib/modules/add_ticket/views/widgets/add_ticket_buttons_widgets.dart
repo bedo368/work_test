@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/add_ticket/cubit/add_tickt_cubit.dart';
-import 'package:flutter_application_1/modules/add_ticket/views/widgets/show_button_dialog.dart';
+import 'package:flutter_application_1/modules/add_ticket/models/degree_model.dart';
+import 'package:flutter_application_1/modules/add_ticket/models/transfer_to_model.dart';
+import 'package:flutter_application_1/modules/add_ticket/views/widgets/show_cuprtiono_buttom_sheet.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddTicktButtonWidget extends StatefulWidget {
@@ -31,23 +33,46 @@ class _AddTicktButtonWidgetState extends State<AddTicktButtonWidget> {
                 child: ElevatedButton(
                   onPressed: () {
                     addTicktCubit.getRefNomList();
-                    showButtomDialog(
-                        cubit: addTicktCubit,
+                    showCupertinoModal(
                         context: context,
-                        type: 'TransferTo',
-                        setSelect: (s, v) {
-                          widget.setSelect(s, v);
-                          setState(() {
-                            selectedType = s;
-                          });
+                        list: addTicktCubit.transferModelList,
+                        type: 'Transfer To',
+                        selected: selectedOption,
+                        onPressed: (selected) {
+                          if (selected is TransferToModel) {
+                            widget.setSelect('TransferTo', selected.resourceId);
+                            setState(() {
+                              selectedType = 'TransferTo';
+                              selectedOption = selected.name;
+                            });
+                          }
+                          if (selected == null) {
+                            widget.setSelect('', '');
+                            setState(() {
+                              selectedType = '';
+                              selectedOption = '';
+                            });
+                          }
+                          Navigator.of(context).pop();
                         });
+
+                    // showButtomDialog(
+                    //     cubit: addTicktCubit,
+                    //     context: context,
+                    //     type: 'TransferTo',
+                    //     setSelect: (s, v) {
+                    //       widget.setSelect(s, v);
+                    //       setState(() {
+                    //         selectedType = s;
+                    //       });
+                    //     });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                   ),
-                  child: const Text(
-                    'Transfer To',
-                    style: TextStyle(color: Colors.white),
+                  child: Text(
+                    'Transfer To : $selectedOption',
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               )
@@ -60,23 +85,46 @@ class _AddTicktButtonWidgetState extends State<AddTicktButtonWidget> {
                 child: ElevatedButton(
                   onPressed: () {
                     addTicktCubit.getDegreeList();
-                    showButtomDialog(
-                        cubit: addTicktCubit,
+
+                    showCupertinoModal(
                         context: context,
-                        type: 'Degree',
-                        setSelect: (s, v) {
-                          widget.setSelect(s, v);
-                          setState(() {
-                            selectedType = s;
-                          });
+                        list: addTicktCubit.degreeList,
+                        type: 'degree',
+                        selected: selectedOption,
+                        onPressed: (selected) {
+                          if (selected is DegreeModel) {
+                            widget.setSelect('Degree', selected.degreeID);
+                            setState(() {
+                              selectedType = 'Degree';
+                              selectedOption = selected.name;
+                            });
+                          }
+                          if (selected == null) {
+                            widget.setSelect('', '');
+                            setState(() {
+                              selectedType = '';
+                              selectedOption = '';
+                            });
+                          }
+                          Navigator.of(context).pop();
                         });
+                    // showButtomDialog(
+                    //     cubit: addTicktCubit,
+                    //     context: context,
+                    //     type: 'Degree',
+                    //     setSelect: (s, v) {
+                    //       widget.setSelect(s, v);
+                    //       setState(() {
+                    //         selectedType = s;
+                    //       });
+                    //     });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                   ),
-                  child: const Text(
-                    'Degree',
-                    style: TextStyle(color: Colors.white),
+                  child: Text(
+                    'Degree $selectedOption',
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               )

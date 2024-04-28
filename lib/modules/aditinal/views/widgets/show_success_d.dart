@@ -9,9 +9,7 @@ Future<dynamic> sowAddTicktDialogSuccess(
   AddinalVisitAddTicktDone state,
 ) {
   void launchURL(String url) async {
-    print(url);
     if (await canLaunchUrl(Uri.parse(url))) {
-      print(url);
       await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';

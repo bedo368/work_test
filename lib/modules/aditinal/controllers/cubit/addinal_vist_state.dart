@@ -2,7 +2,6 @@ part of 'addinal_vist_cubit.dart';
 
 abstract class AddinalVistState extends Equatable {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
@@ -12,7 +11,6 @@ final class AddinalVistScuccess extends AddinalVistState {}
 
 final class AddinalVistLoading extends AddinalVistState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 

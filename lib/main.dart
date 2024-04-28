@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/add_ticket/cubit/add_tickt_cubit.dart';
 import 'package:flutter_application_1/modules/add_ticket/views/screens/add_tickt_screen.dart';
+import 'package:flutter_application_1/modules/reports/api/fetch_all_api/fetch_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FetchAll.init();
   runApp(const MainApp());
 }
 

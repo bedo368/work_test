@@ -80,7 +80,7 @@ class CustomTextField extends StatelessWidget {
       maxLines: maxLines,
       minLines: minLines,
       readOnly: readOnly,
-      style: TextStyle(fontSize: 15, color: Colors.grey),
+      style: const TextStyle(fontSize: 15, color: Colors.grey),
       keyboardType: keyboardType,
       textDirection: textDirection,
       obscureText: obscureText,

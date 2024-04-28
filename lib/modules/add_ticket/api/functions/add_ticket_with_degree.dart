@@ -4,21 +4,24 @@ import 'package:flutter_application_1/core/common/error_model.dart';
 import 'package:flutter_application_1/modules/add_ticket/models/add_ticket_success.dart';
 import 'package:http/http.dart' as http;
 
-Future<dynamic> addTicketWithTransferIdFunc(
+Future<dynamic> addTicketWithDegreeFunc(
     {required String refNom,
     required String disc,
-    required String transferIdType}) async {
+    required String commentAr,
+    required String? correctiveAr,
+    required String? correctiveEn,
+    required String degreeId}) async {
   final body = {
     "PerToken": "5745de6308cd01eb30531bd8613aec81",
     "PerUserID": 37,
     "PerRoleID": 185,
-    "TransferTo": transferIdType,
-    "DegreeID": "11",
+    "TransferTo": '',
+    "DegreeID": degreeId,
     "Description": disc,
-    "CommentAR": "sss",
-    "CorrectiveEN": "",
-    "CorrectiveAR": "ss",
-    "ReferenceNo": double.parse(refNom)
+    "CommentAR": commentAr,
+    "CorrectiveEN": correctiveEn ?? '',
+    "CorrectiveAR": correctiveAr ?? '',
+    "ReferenceNo": refNom
   };
 
   final headers = {'Content-Type': 'application/json'};

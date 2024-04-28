@@ -1,8 +1,10 @@
-class TransferToModel {
+import 'package:equatable/equatable.dart';
+
+class TransferToModel extends Equatable {
   final String resourceId;
   final String name;
 
-  TransferToModel({required this.resourceId, required this.name});
+  const TransferToModel({required this.resourceId, required this.name});
 
   factory TransferToModel.fromJson(Map<String, dynamic> json) =>
       TransferToModel(
@@ -14,6 +16,9 @@ class TransferToModel {
         "ResourceID": resourceId,
         "Name": name,
       };
+
+  @override
+  List<Object?> get props => [resourceId];
 }
 
 class TransferToListModel {

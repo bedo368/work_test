@@ -9,7 +9,7 @@ Future<dynamic> getDegreeListFunc() async {
     "PerToken": "5745de6308cd01eb30531bd8613aec81",
     "PerUserID": 37,
     "PerRoleID": 185,
-    "Category": "Design"
+    "Category": "Inspection"
   };
 
   final headers = {'Content-Type': 'application/json'};

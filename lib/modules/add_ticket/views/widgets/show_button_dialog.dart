@@ -11,14 +11,15 @@ showButtomDialog(
       isDismissible: false,
       backgroundColor: Colors.white.withOpacity(0),
       context: context,
+      
       builder: (context) => BlocProvider<AddTicktCubit>.value(
             value: cubit,
             child: BlocBuilder<AddTicktCubit, AddTicktState>(
                 builder: (BuildContext context, AddTicktState state) {
               return state is AddTicktLoadingState
                   ? const CircularProgressIndicator()
-                  : Column(
-                      mainAxisSize: MainAxisSize.min,
+                  : ListView(
+                      shrinkWrap: true,
                       children: [
                         Card(
                           margin: const EdgeInsets.only(left: 5, right: 5),
@@ -50,6 +51,7 @@ showButtomDialog(
                           ),
                           child: ListView.separated(
                             shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return TextButton(
                                 onPressed: () {
