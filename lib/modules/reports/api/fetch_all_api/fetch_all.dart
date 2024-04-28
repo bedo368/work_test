@@ -1,3 +1,4 @@
+import 'package:flutter_application_1/modules/reports/api/question_api/question_api_repo.dart';
 import 'package:flutter_application_1/modules/reports/api/satage_api/repo/stage_repo.dart';
 import 'package:flutter_application_1/modules/reports/api/sections_api/section_repo/section_api_repo.dart';
 import 'package:flutter_application_1/modules/reports/models/section_model.dart';
@@ -10,6 +11,7 @@ class FetchAll {
   static FetchAll? _instance;
   static final StageApiRepo _stageApiRepo = StageApiRepo();
   static final SectionApiRepo _sectionApiRepo = SectionApiRepo();
+  static final QuestionApiRepo _questApiRepo = QuestionApiRepo();
 
   // Factory constructor to return the singleton instance
   static Future<FetchAll> init() async {
@@ -32,6 +34,8 @@ class FetchAll {
       final res = await Future.wait([
         _stageApiRepo.getAllStages(),
         _sectionApiRepo.getAllSections(),
+        _questApiRepo.getAllQuestion(),
+        _questApiRepo.getAllQuestionOptions(),
       ]);
 
       print(res);

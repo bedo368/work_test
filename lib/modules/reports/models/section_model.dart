@@ -28,15 +28,15 @@ class SectionModel {
 
   factory SectionModel.fromJson(Map<String, dynamic> json) {
     return SectionModel(
-      sectionID: json['SectionID'],
-      sectionType: json['SectionType'],
-      sectionOrder: json['SectionOrder'],
-      sectionName: json['SectionName'],
-      stageID: json['StageID'],
-      ptype: json['Ptype'],
-      deleted: json['Deleted'],
-      lastUpdate: json['LastUpdate'],
-      special: json['Special'],
+      sectionID: json['SectionID'] ?? '',
+      sectionType: json['SectionType'] ?? '',
+      sectionOrder: json['SectionOrder'] ?? '',
+      sectionName: json['SectionName'] ?? '',
+      stageID: json['StageID'] ?? '',
+      ptype: json['Ptype'] ?? '',
+      deleted: json['Deleted'] ?? '',
+      lastUpdate: json['LastUpdate'] ?? '',
+      special: json['Special'] ?? '',
     );
   }
 

@@ -1,164 +1,125 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
 import 'package:hive/hive.dart';
 
-class QuestionsOptionsModel {
-  final String qodID;
-  final String oID;
-  final dynamic qData;
-  final String degreeID;
-  final String degreeName;
-  final dynamic transferTo;
-  final dynamic transferName;
-  final dynamic commentEN;
-  final dynamic commentAR;
-  final dynamic correctiveEN;
-  final dynamic correctiveAR;
+class QuestionOptionsModel {
+  final String qOID;
+  final String qID;
+  final dynamic answer;
+  final dynamic imagesCounter;
+  final String defaultValue;
+  final String active;
+  final String deleted;
 
-  QuestionsOptionsModel({
-    required this.qodID,
-    required this.oID,
-    required this.qData,
-    required this.degreeID,
-    required this.degreeName,
-    required this.transferTo,
-    required this.transferName,
-    required this.commentEN,
-    required this.commentAR,
-    required this.correctiveEN,
-    required this.correctiveAR,
+  QuestionOptionsModel({
+    required this.qOID,
+    required this.qID,
+    required this.answer,
+    required this.imagesCounter,
+    required this.defaultValue,
+    required this.active,
+    required this.deleted,
   });
 
-  factory QuestionsOptionsModel.fromJson(Map<String, dynamic> json) {
-    return QuestionsOptionsModel(
-      qodID: json['QODID'],
-      oID: json['OID'],
-      qData: json['QData'],
-      degreeID: json['DegreeID'],
-      degreeName: json['DegreeName'],
-      transferTo: json['TransferTo'],
-      transferName: json['TransferName'],
-      commentEN: json['CommentEN'],
-      commentAR: json['CommentAR'],
-      correctiveEN: json['CorrectiveEN'],
-      correctiveAR: json['CorrectiveAR'],
+  factory QuestionOptionsModel.fromJson(Map<String, dynamic> json) {
+    return QuestionOptionsModel(
+      qOID: json['QOID'] ?? '',
+      qID: json['QID'] ?? '',
+      answer: json['Answer'] ?? '',
+      imagesCounter: json['ImagesCounter'] ?? '0',
+      defaultValue: json['DefaultValue'] ?? '',
+      active: json['Active'] ?? '',
+      deleted: json['Deleted'] ?? '',
     );
   }
 
-  QuestionsOptionsModel copyWith({
-    String? qodID,
-    String? oID,
-    dynamic qData,
-    String? degreeID,
-    String? degreeName,
-    dynamic transferTo,
-    dynamic transferName,
-    dynamic commentEN,
-    dynamic commentAR,
-    dynamic correctiveEN,
-    dynamic correctiveAR,
+  QuestionOptionsModel copyWith({
+    String? qOID,
+    String? qID,
+    dynamic answer,
+    dynamic imagesCounter,
+    String? defaultValue,
+    String? active,
+    String? deleted,
   }) {
-    return QuestionsOptionsModel(
-      qodID: qodID ?? this.qodID,
-      oID: oID ?? this.oID,
-      qData: qData ?? this.qData,
-      degreeID: degreeID ?? this.degreeID,
-      degreeName: degreeName ?? this.degreeName,
-      transferTo: transferTo ?? this.transferTo,
-      transferName: transferName ?? this.transferName,
-      commentEN: commentEN ?? this.commentEN,
-      commentAR: commentAR ?? this.commentAR,
-      correctiveEN: correctiveEN ?? this.correctiveEN,
-      correctiveAR: correctiveAR ?? this.correctiveAR,
+    return QuestionOptionsModel(
+      qOID: qOID ?? this.qOID,
+      qID: qID ?? this.qID,
+      answer: answer ?? this.answer,
+      imagesCounter: imagesCounter ?? this.imagesCounter,
+      defaultValue: defaultValue ?? this.defaultValue,
+      active: active ?? this.active,
+      deleted: deleted ?? this.deleted,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'qodID': qodID,
-      'oID': oID,
-      'qData': qData,
-      'degreeID': degreeID,
-      'degreeName': degreeName,
-      'transferTo': transferTo,
-      'transferName': transferName,
-      'commentEN': commentEN,
-      'commentAR': commentAR,
-      'correctiveEN': correctiveEN,
-      'correctiveAR': correctiveAR,
+      'qOID': qOID,
+      'qID': qID,
+      'answer': answer,
+      'imagesCounter': imagesCounter,
+      'defaultValue': defaultValue,
+      'active': active,
+      'deleted': deleted,
     };
   }
 
-  factory QuestionsOptionsModel.fromMap(Map<String, dynamic> map) {
-    return QuestionsOptionsModel(
-      qodID: map['qodID'] as String,
-      oID: map['oID'] as String,
-      qData: map['qData'],
-      degreeID: map['degreeID'] as String,
-      degreeName: map['degreeName'] as String,
-      transferTo: map['transferTo'],
-      transferName: map['transferName'],
-      commentEN: map['commentEN'],
-      commentAR: map['commentAR'],
-      correctiveEN: map['correctiveEN'],
-      correctiveAR: map['correctiveAR'],
+  factory QuestionOptionsModel.fromMap(Map<String, dynamic> map) {
+    return QuestionOptionsModel(
+      qOID: map['qOID'] as String,
+      qID: map['qID'] as String,
+      answer: map['answer'] as dynamic,
+      imagesCounter: map['imagesCounter'] as dynamic,
+      defaultValue: map['defaultValue'] as String,
+      active: map['active'] as String,
+      deleted: map['deleted'] as String,
     );
   }
 
-  String toJson() {
-    return json.encode(toMap());
-  }
+  String toJson() => json.encode(toMap());
 }
 
-class SectionsDataModel {
-  final Map<String, QuestionsOptionsModel> questionOptions;
+class QuestionsOptionsDataModel {
+  final Map<String, QuestionOptionsModel> questionsAnswers;
 
-  SectionsDataModel({required this.questionOptions});
+  QuestionsOptionsDataModel({required this.questionsAnswers});
 
-  factory SectionsDataModel.fromJson(Map<String, dynamic> json) {
-    Map<String, QuestionsOptionsModel> qo = {};
+  factory QuestionsOptionsDataModel.fromJson(Map<String, dynamic> json) {
+    Map<String, QuestionOptionsModel> qA = {};
     json.forEach((key, value) {
       if (key != 'error') {
-        qo[key] = QuestionsOptionsModel.fromJson(value);
+        qA[key] = QuestionOptionsModel.fromJson(value);
       }
     });
-    return SectionsDataModel(questionOptions: qo);
+    return QuestionsOptionsDataModel(questionsAnswers: qA);
   }
 }
 
-class QuestionsOptionsModelAdapter extends TypeAdapter<QuestionsOptionsModel> {
+class QutionDataAdaptor extends TypeAdapter<QuestionOptionsModel> {
   @override
-  final int typeId = 3;
-
-  @override
-  QuestionsOptionsModel read(BinaryReader reader) {
-    return QuestionsOptionsModel(
-      qodID: reader.read(),
-      oID: reader.read(),
-      qData: reader.read(),
-      degreeID: reader.read(),
-      degreeName: reader.read(),
-      transferTo: reader.read(),
-      transferName: reader.read(),
-      commentEN: reader.read(),
-      commentAR: reader.read(),
-      correctiveEN: reader.read(),
-      correctiveAR: reader.read(),
-    );
+  QuestionOptionsModel read(BinaryReader reader) {
+    return QuestionOptionsModel(
+        qOID: reader.read(),
+        qID: reader.read(),
+        answer: reader.read(),
+        imagesCounter: reader.read(),
+        defaultValue: reader.read(),
+        active: reader.read(),
+        deleted: reader.read());
   }
 
   @override
-  void write(BinaryWriter writer, QuestionsOptionsModel obj) {
-    writer.write(obj.qodID);
-    writer.write(obj.oID);
-    writer.write(obj.qData);
-    writer.write(obj.degreeID);
-    writer.write(obj.degreeName);
-    writer.write(obj.transferTo);
-    writer.write(obj.transferName);
-    writer.write(obj.commentEN);
-    writer.write(obj.commentAR);
-    writer.write(obj.correctiveEN);
-    writer.write(obj.correctiveAR);
+  int get typeId => 4;
+
+  @override
+  void write(BinaryWriter writer, QuestionOptionsModel obj) {
+    writer.write(obj.qOID);
+    writer.write(obj.qID);
+    writer.write(obj.answer);
+    writer.write(obj.imagesCounter);
+    writer.write(obj.defaultValue);
+    writer.write(obj.active);
+    writer.write(obj.deleted);
   }
 }

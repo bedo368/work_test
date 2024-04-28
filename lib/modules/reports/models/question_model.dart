@@ -13,7 +13,7 @@ class QuestionModel {
   final String answerType;
   final String active;
   final String rd6;
-  final String createdAt;
+  final DateTime createdAt;
   final String deleted;
   final String? tiCode;
   final String required;
@@ -45,7 +45,9 @@ class QuestionModel {
       answerType: json['AnswerType'],
       active: json['Active'],
       rd6: json['RD6'],
-      createdAt: json['CreatedAt'],
+      createdAt: json['CreatedAt']
+          ? DateTime.parse(json['CreatedAt'].toString())
+          : DateTime.now(),
       deleted: json['Deleted'],
       tiCode: json['TICode'],
       required: json['Required'],
@@ -62,7 +64,7 @@ class QuestionModel {
     String? answerType,
     String? active,
     String? rd6,
-    String? createdAt,
+    DateTime? createdAt,
     String? deleted,
     String? tiCode,
     String? required,
@@ -113,7 +115,8 @@ class QuestionModel {
       answerType: map['answerType'] as String,
       active: map['active'] as String,
       rd6: map['rd6'] as String,
-      createdAt: map['createdAt'] as String,
+      createdAt:
+          map['createdAt'] ? DateTime.parse(map['createdAt']) : DateTime.now(),
       deleted: map['deleted'] as String,
       tiCode: map['tiCode'] != null ? map['tiCode'] as String : null,
       required: map['required'] as String,

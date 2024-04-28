@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/core/common/error_model.dart';
-import 'package:flutter_application_1/modules/reports/models/section_model.dart';
+import 'package:flutter_application_1/modules/reports/models/question_options_model.dart';
 import 'package:http/http.dart' as http;
 
-Future<dynamic> getAllSectionFunc() async {
+Future<dynamic> getAllQuestionsFunc() async {
   try {
     final uri = Uri.parse(
         'https://test.cpvarabia.com/api/Inspection_App/download_sections.php');
@@ -22,13 +22,13 @@ Future<dynamic> getAllSectionFunc() async {
 
     final data = jsonDecode(response.body);
     if (response.statusCode == 200 && !data['error']) {
-      return SectionsDataModel.fromJson(data);
+      return QuestionsOptionsDataModel.fromJson(data);
     } else if (data['error']) {
       return ErrorModel(errorMessage: data["message"]);
     } else {
       return ErrorModel(errorMessage: 'error!');
     }
   } catch (e) {
-    return ErrorModel(errorMessage: 'error!');
+    return ErrorModel(errorMessage: 'wrong');
   }
 }
