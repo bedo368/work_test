@@ -4,10 +4,10 @@ import 'package:flutter_application_1/core/common/error_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_options_model.dart';
 import 'package:http/http.dart' as http;
 
-Future<dynamic> getAllQuestionsFunc() async {
+Future<dynamic> getAllQuestionsOptionsFunc() async {
   try {
     final uri = Uri.parse(
-        'https://test.cpvarabia.com/api/Inspection_App/download_sections.php');
+        'https://test.cpvarabia.com/api/Inspection_App/download_questions_options.php');
     final body = {
       "PerToken": "5745de6308cd01eb30531bd8613aec81",
       "PerUserID": 37,
@@ -29,6 +29,6 @@ Future<dynamic> getAllQuestionsFunc() async {
       return ErrorModel(errorMessage: 'error!');
     }
   } catch (e) {
-    return ErrorModel(errorMessage: 'wrong');
+    return ErrorModel(errorMessage: 'error!');
   }
 }

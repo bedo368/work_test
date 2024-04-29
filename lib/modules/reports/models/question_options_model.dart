@@ -81,9 +81,9 @@ class QuestionOptionsModel {
 }
 
 class QuestionsOptionsDataModel {
-  final Map<String, QuestionOptionsModel> questionsAnswers;
+  final Map<String, QuestionOptionsModel> questionsOptions;
 
-  QuestionsOptionsDataModel({required this.questionsAnswers});
+  QuestionsOptionsDataModel({required this.questionsOptions});
 
   factory QuestionsOptionsDataModel.fromJson(Map<String, dynamic> json) {
     Map<String, QuestionOptionsModel> qA = {};
@@ -92,11 +92,11 @@ class QuestionsOptionsDataModel {
         qA[key] = QuestionOptionsModel.fromJson(value);
       }
     });
-    return QuestionsOptionsDataModel(questionsAnswers: qA);
+    return QuestionsOptionsDataModel(questionsOptions: qA);
   }
 }
 
-class QutionDataAdaptor extends TypeAdapter<QuestionOptionsModel> {
+class QuestionOptionAdaptor extends TypeAdapter<QuestionOptionsModel> {
   @override
   QuestionOptionsModel read(BinaryReader reader) {
     return QuestionOptionsModel(

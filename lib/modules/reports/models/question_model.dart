@@ -13,7 +13,7 @@ class QuestionModel {
   final String answerType;
   final String active;
   final String rd6;
-  final DateTime createdAt;
+  final String createdAt;
   final String deleted;
   final String? tiCode;
   final String required;
@@ -36,21 +36,19 @@ class QuestionModel {
 
   factory QuestionModel.fromJson(Map<String, dynamic> json) {
     return QuestionModel(
-      qID: json['QID'],
-      questionOrder: json['QuestionOrder'],
-      sectionID: json['SectionID'],
-      qTitle: json['QTitle'],
-      qHint: json['QHint'],
-      qHelp: json['QHelp'],
-      answerType: json['AnswerType'],
-      active: json['Active'],
-      rd6: json['RD6'],
-      createdAt: json['CreatedAt']
-          ? DateTime.parse(json['CreatedAt'].toString())
-          : DateTime.now(),
-      deleted: json['Deleted'],
-      tiCode: json['TICode'],
-      required: json['Required'],
+      qID: json['QID'] ?? "",
+      questionOrder: json['QuestionOrder'] ?? "",
+      sectionID: json['SectionID'] ?? "",
+      qTitle: json['QTitle'] ?? "",
+      qHint: json['QHint'] ?? "",
+      qHelp: json['QHelp'] ?? "",
+      answerType: json['AnswerType'] ?? "",
+      active: json['Active'] ?? "",
+      rd6: json['RD6'] ?? "",
+      createdAt: json['CreatedAt'] ?? '',
+      deleted: json['Deleted'] ?? "",
+      tiCode: json['TICode'] ?? "",
+      required: json['Required'] ?? "",
     );
   }
 
@@ -64,7 +62,7 @@ class QuestionModel {
     String? answerType,
     String? active,
     String? rd6,
-    DateTime? createdAt,
+    String? createdAt,
     String? deleted,
     String? tiCode,
     String? required,
@@ -115,8 +113,7 @@ class QuestionModel {
       answerType: map['answerType'] as String,
       active: map['active'] as String,
       rd6: map['rd6'] as String,
-      createdAt:
-          map['createdAt'] ? DateTime.parse(map['createdAt']) : DateTime.now(),
+      createdAt: map['createdAt'] ,
       deleted: map['deleted'] as String,
       tiCode: map['tiCode'] != null ? map['tiCode'] as String : null,
       required: map['required'] as String,

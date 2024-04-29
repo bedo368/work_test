@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/core/common/error_model.dart';
-import 'package:flutter_application_1/modules/reports/models/question_options_data_model.dart';
+import 'package:flutter_application_1/modules/reports/models/question_model.dart';
 import 'package:http/http.dart' as http;
 
-Future<dynamic> getAllQuestionsOptionsFunc() async {
+Future<dynamic> getAllQuestionsFunc() async {
   try {
     final uri = Uri.parse(
-        'https://test.cpvarabia.com/api/Inspection_App/download_questions_options.php');
+        'https://test.cpvarabia.com/api/Inspection_App/Download_Questions.php');
     final body = {
       "PerToken": "5745de6308cd01eb30531bd8613aec81",
       "PerUserID": 37,
@@ -22,13 +22,13 @@ Future<dynamic> getAllQuestionsOptionsFunc() async {
 
     final data = jsonDecode(response.body);
     if (response.statusCode == 200 && !data['error']) {
-      return QuestionOptionDataDataModel.fromJson(data);
+      return QuestionsDataModel.fromJson(data);
     } else if (data['error']) {
       return ErrorModel(errorMessage: data["message"]);
     } else {
       return ErrorModel(errorMessage: 'error!');
     }
   } catch (e) {
-    return ErrorModel(errorMessage: 'error!');
+    return ErrorModel(errorMessage: 'wrong');
   }
 }

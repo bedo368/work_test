@@ -2,7 +2,7 @@
 import 'dart:convert';
 import 'package:hive/hive.dart';
 
-class QuestionsOptionsDataModel {
+class QuestionsOptionDModel {
   final String qodID;
   final String oID;
   final dynamic qData;
@@ -15,7 +15,7 @@ class QuestionsOptionsDataModel {
   final dynamic correctiveEN;
   final dynamic correctiveAR;
 
-  QuestionsOptionsDataModel({
+  QuestionsOptionDModel({
     required this.qodID,
     required this.oID,
     required this.qData,
@@ -29,8 +29,8 @@ class QuestionsOptionsDataModel {
     required this.correctiveAR,
   });
 
-  factory QuestionsOptionsDataModel.fromJson(Map<String, dynamic> json) {
-    return QuestionsOptionsDataModel(
+  factory QuestionsOptionDModel.fromJson(Map<String, dynamic> json) {
+    return QuestionsOptionDModel(
       qodID: json['QODID'] ?? '',
       oID: json['OID'] ?? '',
       qData: json['QData'] ?? '',
@@ -45,7 +45,7 @@ class QuestionsOptionsDataModel {
     );
   }
 
-  QuestionsOptionsDataModel copyWith({
+  QuestionsOptionDModel copyWith({
     String? qodID,
     String? oID,
     dynamic qData,
@@ -58,7 +58,7 @@ class QuestionsOptionsDataModel {
     dynamic correctiveEN,
     dynamic correctiveAR,
   }) {
-    return QuestionsOptionsDataModel(
+    return QuestionsOptionDModel(
       qodID: qodID ?? this.qodID,
       oID: oID ?? this.oID,
       qData: qData ?? this.qData,
@@ -89,8 +89,8 @@ class QuestionsOptionsDataModel {
     };
   }
 
-  factory QuestionsOptionsDataModel.fromMap(Map<String, dynamic> map) {
-    return QuestionsOptionsDataModel(
+  factory QuestionsOptionDModel.fromMap(Map<String, dynamic> map) {
+    return QuestionsOptionDModel(
       qodID: map['qodID'] as String,
       oID: map['oID'] as String,
       qData: map['qData'],
@@ -110,30 +110,29 @@ class QuestionsOptionsDataModel {
   }
 }
 
-class QuestionOptionDataDataModel {
-  final Map<String, QuestionsOptionsDataModel> questionOptions;
+class QuestionOptionDDataModel {
+  final Map<String, QuestionsOptionDModel> questionOptionsData;
 
-  QuestionOptionDataDataModel({required this.questionOptions});
+  QuestionOptionDDataModel({required this.questionOptionsData});
 
-  factory QuestionOptionDataDataModel.fromJson(Map<String, dynamic> json) {
-    Map<String, QuestionsOptionsDataModel> qo = {};
+  factory QuestionOptionDDataModel.fromJson(Map<String, dynamic> json) {
+    Map<String, QuestionsOptionDModel> qo = {};
     json.forEach((key, value) {
       if (key != 'error') {
-        qo[key] = QuestionsOptionsDataModel.fromJson(value);
+        qo[key] = QuestionsOptionDModel.fromJson(value);
       }
     });
-    return QuestionOptionDataDataModel(questionOptions: qo);
+    return QuestionOptionDDataModel(questionOptionsData: qo);
   }
 }
 
-class QuestionsOptionsModelAdapter
-    extends TypeAdapter<QuestionsOptionsDataModel> {
+class QuestionsOptionsDataAdapter extends TypeAdapter<QuestionsOptionDModel> {
   @override
   final int typeId = 3;
 
   @override
-  QuestionsOptionsDataModel read(BinaryReader reader) {
-    return QuestionsOptionsDataModel(
+  QuestionsOptionDModel read(BinaryReader reader) {
+    return QuestionsOptionDModel(
       qodID: reader.read(),
       oID: reader.read(),
       qData: reader.read(),
@@ -149,7 +148,7 @@ class QuestionsOptionsModelAdapter
   }
 
   @override
-  void write(BinaryWriter writer, QuestionsOptionsDataModel obj) {
+  void write(BinaryWriter writer, QuestionsOptionDModel obj) {
     writer.write(obj.qodID);
     writer.write(obj.oID);
     writer.write(obj.qData);

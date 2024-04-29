@@ -114,9 +114,6 @@ class SectionsDataModel {
 
 class SectionModelHiveAdapter extends TypeAdapter<SectionModel> {
   @override
-  final int typeId = 1;
-
-  @override
   SectionModel read(BinaryReader reader) {
     return SectionModel(
       sectionID: reader.read(),
@@ -143,4 +140,7 @@ class SectionModelHiveAdapter extends TypeAdapter<SectionModel> {
     writer.write(obj.lastUpdate);
     writer.write(obj.special);
   }
+
+  @override
+  int get typeId => 1;
 }

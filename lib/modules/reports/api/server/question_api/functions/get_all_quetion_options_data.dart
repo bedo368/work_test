@@ -4,7 +4,7 @@ import 'package:flutter_application_1/core/common/error_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_options_data_model.dart';
 import 'package:http/http.dart' as http;
 
-Future<dynamic> getAllQuestionAnswersFunc() async {
+Future<dynamic> getAllQuestionOptionDataFunc() async {
   try {
     final uri = Uri.parse(
         'https://test.cpvarabia.com/api/Inspection_App/download_questions_options_data.php');
@@ -21,9 +21,8 @@ Future<dynamic> getAllQuestionAnswersFunc() async {
         await http.post(uri, headers: headers, body: jsonEncode(body));
 
     final data = jsonDecode(response.body);
-    print(data);
     if (response.statusCode == 200 && !data['error']) {
-      return QuestionsOptionsDataModel.fromJson(data);
+      return QuestionOptionDDataModel.fromJson(data);
     } else if (data['error']) {
       return ErrorModel(errorMessage: data["message"]);
     } else {
