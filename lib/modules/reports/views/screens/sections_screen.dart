@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/reports/controllers/questin_cubit/question_cubit.dart';
 import 'package:flutter_application_1/modules/reports/controllers/section_cubit/sections_cubit.dart';
@@ -27,7 +26,7 @@ class SectionScreen extends StatelessWidget {
               body: ListView.separated(
                   itemBuilder: (context, index) {
                     return state is SectionsLoadingState
-                        ? CircularProgressIndicator()
+                        ? const CircularProgressIndicator()
                         : TextButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(

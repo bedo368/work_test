@@ -12,7 +12,7 @@ final class QuestionInitial extends QuestionState {}
 final class QuestionErrorState extends QuestionState {
   final String message;
 
-  QuestionErrorState({required this.message});
+  const QuestionErrorState({required this.message});
 }
 
 final class QuestionLoadingState extends QuestionState {}

@@ -40,7 +40,6 @@ class FetchAllAndStoreInLocalStorage {
       _hive.registerAdapter(StageModelHiveAdaptor());
     }
     if (!Hive.isAdapterRegistered(SectionModelHiveAdapter().typeId)) {
-      print('reg');
       _hive.registerAdapter(SectionModelHiveAdapter());
     }
     if (!_hive.isAdapterRegistered(QuestionHiveAdaptor().typeId)) {

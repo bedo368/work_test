@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/reports/controllers/questin_cubit/question_cubit.dart';
 import 'package:flutter_application_1/modules/reports/models/section_model.dart';
-import 'package:flutter_application_1/modules/reports/views/widgets/check_list_question.dart';
 import 'package:flutter_application_1/modules/reports/views/widgets/select_question_by_type.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

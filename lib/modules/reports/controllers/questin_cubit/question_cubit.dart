@@ -37,10 +37,10 @@ class QuestionCubit extends Cubit<QuestionState> {
       } else if (data is ErrorModel) {
         emit(QuestionErrorState(message: data.errorMessage));
       } else {
-        emit(QuestionErrorState(message: 'local error happend '));
+        emit(const QuestionErrorState(message: 'local error happend '));
       }
     } catch (e) {
-      emit(QuestionErrorState(message: 'local error happend '));
+      emit(const QuestionErrorState(message: 'local error happend '));
     }
   }
 

@@ -22,10 +22,10 @@ class SectionsCubit extends Cubit<SectionsState> {
       } else if (data is ErrorModel) {
         emit(SectionsErrorState(message: data.errorMessage));
       } else {
-        emit(SectionsErrorState(message: 'local error'));
+        emit(const SectionsErrorState(message: 'local error'));
       }
     } catch (e) {
-      emit(SectionsErrorState(message: 'local error'));
+      emit(const SectionsErrorState(message: 'local error'));
     }
   }
 }

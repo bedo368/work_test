@@ -17,7 +17,17 @@ class CheckListQuestionWidget extends StatefulWidget {
 }
 
 class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget> {
-  String currentValue = '';
+  QuestionOptionsModel? currentValue;
+  @override
+  void initState() {
+    for (var q in widget.questionOptions) {
+      if (q.defaultValue == '1') {
+        currentValue = q;
+      }
+    }
+    super.initState();
+  }
+
   @override
   @override
   Widget build(BuildContext context) {
@@ -31,10 +41,10 @@ class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget> {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return RadioListTile<String>(
-                  value: widget.questionOptions[index].answer,
+                return RadioListTile<QuestionOptionsModel>(
+                  value: widget.questionOptions[index],
                   title: Text(widget.questionOptions[index].answer),
-                  onChanged: (String? value) {
+                  onChanged: (QuestionOptionsModel? value) {
                     setState(() {
                       currentValue = value!;
                     });

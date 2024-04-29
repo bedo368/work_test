@@ -14,7 +14,7 @@ final class StagesLoadingState extends StagesState {}
 final class StagesErrorState extends StagesState {
   final String message;
 
-  StagesErrorState({required this.message});
+  const StagesErrorState({required this.message});
 }
 
 final class StagesGetSucessState extends StagesState {}

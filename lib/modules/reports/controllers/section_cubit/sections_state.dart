@@ -12,7 +12,7 @@ final class SectionsInitial extends SectionsState {}
 final class SectionsErrorState extends SectionsState {
   final String message;
 
-  SectionsErrorState({required this.message});
+  const SectionsErrorState({required this.message});
 }
 
 final class SectionsLoadingState extends SectionsState {}

@@ -5,12 +5,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 Future<dynamic> fetchAllStagesFromHiveFunc() async {
   try {
     if (Hive.isBoxOpen(hiveStageBox)) {
-      final _stageBox = Hive.box<StageModel>(hiveStageBox);
+      final stageBox = Hive.box<StageModel>(hiveStageBox);
 
-      return _stageBox.values.toList();
+      return stageBox.values.toList();
     } else {
-      final _stageBox = await Hive.openBox<StageModel>(hiveStageBox);
-      return _stageBox.values.toList();
+      final stageBox = await Hive.openBox<StageModel>(hiveStageBox);
+      return stageBox.values.toList();
     }
   } catch (e) {
     rethrow;
