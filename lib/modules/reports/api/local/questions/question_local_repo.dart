@@ -1,6 +1,6 @@
-import 'package:flutter_application_1/modules/reports/api/local/questions/fuctoins/get_question_by_sectionId.dart';
+import 'package:flutter_application_1/modules/reports/api/local/questions/fuctoins/get_question_by_section_id.dart';
 import 'package:flutter_application_1/modules/reports/api/local/questions/fuctoins/get_question_data_by_question_id.dart';
-import 'package:flutter_application_1/modules/reports/api/local/questions/fuctoins/get_question_options_by_questionId.dart';
+import 'package:flutter_application_1/modules/reports/api/local/questions/fuctoins/get_question_options_by_question_id.dart';
 import 'package:flutter_application_1/modules/reports/api/local/questions/fuctoins/get_question_options_data_by_questionoptionid.dart';
 
 class QuestionLocalRepo {

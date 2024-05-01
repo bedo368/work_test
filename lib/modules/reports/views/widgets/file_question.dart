@@ -16,14 +16,9 @@ class FileQuestionWidget extends StatefulWidget {
   State<FileQuestionWidget> createState() => _FileQuestionWidgetState();
 }
 
-class _FileQuestionWidgetState extends State<FileQuestionWidget> with AutomaticKeepAliveClientMixin{
+class _FileQuestionWidgetState extends State<FileQuestionWidget>
+    with AutomaticKeepAliveClientMixin {
   QuestionOptionsModel? currentValue;
-
-  @override
-  void initState() {
-    
-    super.initState();
-  }
 
   String filePath = '';
   void _openFilePicker() async {
@@ -86,7 +81,7 @@ class _FileQuestionWidgetState extends State<FileQuestionWidget> with AutomaticK
       ],
     );
   }
-  
+
   @override
   bool get wantKeepAlive => true;
 }

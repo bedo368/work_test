@@ -64,7 +64,6 @@ class _CheckBoxQuestionOptionWidgetState
                         }
                         widget.onSelect(_selectedAnswer);
                       });
-                      print(_selectedAnswer);
                     });
               },
               separatorBuilder: (context, index) {

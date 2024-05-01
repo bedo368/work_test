@@ -36,7 +36,6 @@ class _ImageQuestionWidgetState extends State<ImageQuestionWidget>
   }
 
   Future<void> _pickImage(ImageSource source) async {
-    print('object');
     final pickedImage = await ImagePicker().pickImage(source: source);
     if (pickedImage != null && imageList.length < imageNum) {
       setState(() {

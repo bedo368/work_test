@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/reports/controllers/questin_cubit/question_cubit.dart';
 import 'package:flutter_application_1/modules/reports/controllers/section_cubit/sections_cubit.dart';
 import 'package:flutter_application_1/modules/reports/models/stage_models.dart';
-import 'package:flutter_application_1/modules/reports/views/screens/question_screen.dart';
+import 'package:flutter_application_1/modules/reports/views/screens/questions_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SectionScreen extends StatelessWidget {

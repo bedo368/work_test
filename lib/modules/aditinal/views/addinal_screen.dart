@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/aditinal/controllers/cubit/addinal_vist_cubit.dart';
 import 'package:flutter_application_1/modules/aditinal/views/widgets/adintal_item_widget.dart';
-import 'package:flutter_application_1/modules/aditinal/views/widgets/build_adinalList.dart';
+import 'package:flutter_application_1/modules/aditinal/views/widgets/build_adinal_list.dart';
 import 'package:flutter_application_1/modules/aditinal/views/widgets/search_appbar.dart';
 import 'package:flutter_application_1/modules/aditinal/views/widgets/show_success_d.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

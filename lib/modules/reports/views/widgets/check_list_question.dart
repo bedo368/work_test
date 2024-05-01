@@ -67,7 +67,6 @@ class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
                   onChanged: (QuestionOptionsModel? value) {
                     setState(() {
                       currentValue = value!;
-                      print(currentValue!.qOID);
                     });
                   },
                   groupValue: currentValue,

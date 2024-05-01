@@ -75,7 +75,6 @@ class _CheckBoxQuestionWidgetState extends State<CheckBoxQuestionWidget>
                               widget.questionOptions[index].qOID);
                         } else {
                           _selectedAnswer.add(widget.questionOptions[index]);
-                          print(_selectedAnswer);
                         }
                       });
                     });
