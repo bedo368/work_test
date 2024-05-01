@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/aditinal/controllers/cubit/addinal_vist_cubit.dart';
-import 'package:flutter_application_1/modules/aditinal/views/widgets/show_addTickt_dialog.dart';
+import 'package:flutter_application_1/modules/aditinal/views/widgets/show_addtickt_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 SliverAppBar searchAppBart(BuildContext context, AddinalVistState state,

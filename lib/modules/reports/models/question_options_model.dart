@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
-class QuestionOptionsModel {
+class QuestionOptionsModel extends Equatable {
   final String qOID;
   final String qID;
   final dynamic answer;
@@ -11,7 +12,7 @@ class QuestionOptionsModel {
   final String active;
   final String deleted;
 
-  QuestionOptionsModel({
+  const QuestionOptionsModel({
     required this.qOID,
     required this.qID,
     required this.answer,
@@ -78,6 +79,9 @@ class QuestionOptionsModel {
   }
 
   String toJson() => json.encode(toMap());
+
+  @override
+  List<Object?> get props => [qOID, qID];
 }
 
 class QuestionsOptionsDataModel {

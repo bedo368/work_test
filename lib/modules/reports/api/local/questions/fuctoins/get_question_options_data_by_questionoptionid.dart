@@ -10,13 +10,13 @@ Future<dynamic> getQuestionOptoinDataByQuestionOptionIdFunc(
           Hive.box<QuestionsOptionDModel>(hiveQuestionOptionDataBox);
 
       return questionBox.values
-          .where((element) => element.qodID == questionOptionId)
+          .where((element) => element.oID == questionOptionId)
           .toList();
     } else {
       final questionBox =
           await Hive.openBox<QuestionsOptionDModel>(hiveQuestionOptionDataBox);
       return questionBox.values
-          .where((element) => element.qodID == questionOptionId)
+          .where((element) => element.oID == questionOptionId)
           .toList();
     }
   } catch (e) {

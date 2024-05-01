@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/reports/models/question_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_options_model.dart';
 
-class CheckListQuestionWidget extends StatefulWidget {
-  const CheckListQuestionWidget({
+class CheckBoxQuestionWidget extends StatefulWidget {
+  const CheckBoxQuestionWidget({
     super.key,
     required this.question,
     required this.questionOptions,
@@ -12,19 +12,20 @@ class CheckListQuestionWidget extends StatefulWidget {
   final List<QuestionOptionsModel> questionOptions;
 
   @override
-  State<CheckListQuestionWidget> createState() =>
-      _CheckListQuestionWidgetState();
+  State<CheckBoxQuestionWidget> createState() => _CheckBoxQuestionWidgetState();
 }
 
-class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
+class _CheckBoxQuestionWidgetState extends State<CheckBoxQuestionWidget>
     with AutomaticKeepAliveClientMixin {
   QuestionOptionsModel? currentValue;
+  final List<QuestionOptionsModel> _selectedAnswer = [];
 
   @override
   void initState() {
     for (var q in widget.questionOptions) {
       if (q.defaultValue == '1') {
         currentValue = q;
+        _selectedAnswer.add(q);
       }
     }
 
@@ -42,8 +43,8 @@ class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Text(widget.question.qID)),
-              widget.question.required != '1'
+              Expanded(child: Text(widget.question.qTitle)),
+              widget.question.required == '1'
                   ? const Align(
                       alignment: Alignment.topRight,
                       child: Text(
@@ -61,17 +62,23 @@ class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return RadioListTile<QuestionOptionsModel>(
-                  value: widget.questionOptions[index],
-                  title: Text(widget.questionOptions[index].answer),
-                  onChanged: (QuestionOptionsModel? value) {
-                    setState(() {
-                      currentValue = value!;
-                      print(currentValue!.qOID);
+                return CheckboxListTile(
+                    title: Text(widget.questionOptions[index].answer ?? ''),
+                    value:
+                        _selectedAnswer.contains(widget.questionOptions[index]),
+                    onChanged: (v) {
+                      setState(() {
+                        if (_selectedAnswer
+                            .contains(widget.questionOptions[index])) {
+                          _selectedAnswer.removeWhere((element) =>
+                              element.qOID ==
+                              widget.questionOptions[index].qOID);
+                        } else {
+                          _selectedAnswer.add(widget.questionOptions[index]);
+                          print(_selectedAnswer);
+                        }
+                      });
                     });
-                  },
-                  groupValue: currentValue,
-                );
               },
               separatorBuilder: (context, index) {
                 return const SizedBox(

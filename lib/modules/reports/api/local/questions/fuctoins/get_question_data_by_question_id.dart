@@ -8,16 +8,16 @@ Future<dynamic> getQuestionInfoByQuestionIdFunc(
   try {
     final qOptions =
         await getQuestionOptoinByQuestionIdFunc(questionId: questionId);
-    List<QuestionsOptionDModel> qustionOptions = [];
+    List<QuestionsOptionDModel> qustionOptionsData = [];
 
     for (var q in (qOptions as List<QuestionOptionsModel>)) {
       final qOptionData = await getQuestionOptoinDataByQuestionOptionIdFunc(
           questionOptionId: q.qOID);
-      qustionOptions.addAll(qOptionData);
+      qustionOptionsData.addAll(qOptionData);
     }
 
-    final questiondata = {"option": qOptions, "optionData": qustionOptions};
-    return questiondata ;
+    final questiondata = {"option": qOptions, "optionData": qustionOptionsData};
+    return questiondata;
   } catch (e) {
     rethrow;
   }

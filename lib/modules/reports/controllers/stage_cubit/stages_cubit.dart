@@ -23,7 +23,7 @@ class StagesCubit extends Cubit<StagesState> {
         emit(StagesErrorState(message: stagess.errorMessage));
       }
     } catch (e) {
-      emit(StagesErrorState(message: 'local data error '));
+      emit(const StagesErrorState(message: 'local data error '));
     }
   }
 }

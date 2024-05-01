@@ -11,25 +11,39 @@ class DropDwonQuestionWidget extends StatefulWidget {
   State<DropDwonQuestionWidget> createState() => _DropDwonQuestionWidgetState();
 }
 
-class _DropDwonQuestionWidgetState extends State<DropDwonQuestionWidget> {
+class _DropDwonQuestionWidgetState extends State<DropDwonQuestionWidget>
+    with AutomaticKeepAliveClientMixin {
   QuestionOptionsModel? _selectedOption;
+
   @override
   void initState() {
     for (var o in widget.questionOptions) {
-      print(o.toMap());
       if (o.defaultValue == '1') {
         _selectedOption = o;
       }
     }
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final options = widget.questionOptions;
+    super.build(context);
     return Column(
       children: [
-        ListTile(title: Text(widget.question.qTitle)),
+        ListTile(
+            title: Row(
+          children: [
+            Expanded(child: Text(widget.question.qTitle)),
+            widget.question.required != '1'
+                ? const Text('not required',
+                    style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey))
+                : const SizedBox(),
+          ],
+        )),
         DropdownButton<QuestionOptionsModel>(
           value: _selectedOption,
           onChanged: (newValue) {
@@ -37,8 +51,9 @@ class _DropDwonQuestionWidgetState extends State<DropDwonQuestionWidget> {
               _selectedOption = newValue!;
             });
           },
-          items: options.map<DropdownMenuItem<QuestionOptionsModel>>(
-              (QuestionOptionsModel value) {
+          items: widget.questionOptions
+              .map<DropdownMenuItem<QuestionOptionsModel>>(
+                  (QuestionOptionsModel value) {
             return DropdownMenuItem<QuestionOptionsModel>(
               value: value,
               child: Text(value.answer),
@@ -48,4 +63,7 @@ class _DropDwonQuestionWidgetState extends State<DropDwonQuestionWidget> {
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

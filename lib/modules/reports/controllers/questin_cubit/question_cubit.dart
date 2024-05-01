@@ -17,6 +17,12 @@ class QuestionCubit extends Cubit<QuestionState> {
   List<QuestionsOptionDModel> questionOptionData = [];
 
   final _questionLocalRepo = QuestionLocalRepo();
+
+  List<QuestionsOptionDModel> getQuestionOptionDataByQuestionOptionId(
+      String qoid) {
+    return questionOptionData.where((element) => element.oID == qoid).toList();
+  }
+
   Future<void> fetchQuestionAndQutionDataBySectionId(
       {required String sectionId}) async {
     try {

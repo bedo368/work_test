@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/reports/models/question_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_options_model.dart';
 
-class CheckListQuestionWidget extends StatefulWidget {
-  const CheckListQuestionWidget({
+class RadioQuestionWidget extends StatefulWidget {
+  const RadioQuestionWidget({
     super.key,
     required this.question,
     required this.questionOptions,
@@ -12,12 +12,11 @@ class CheckListQuestionWidget extends StatefulWidget {
   final List<QuestionOptionsModel> questionOptions;
 
   @override
-  State<CheckListQuestionWidget> createState() =>
-      _CheckListQuestionWidgetState();
+  State<RadioQuestionWidget> createState() =>
+      _RadioQuestionWidgetState();
 }
 
-class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
-    with AutomaticKeepAliveClientMixin {
+class _RadioQuestionWidgetState extends State<RadioQuestionWidget> with AutomaticKeepAliveClientMixin{
   QuestionOptionsModel? currentValue;
 
   @override
@@ -28,12 +27,14 @@ class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
       }
     }
 
+    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -42,7 +43,7 @@ class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Text(widget.question.qID)),
+              Expanded(child: Text(widget.question.qTitle)),
               widget.question.required != '1'
                   ? const Align(
                       alignment: Alignment.topRight,
@@ -67,7 +68,6 @@ class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
                   onChanged: (QuestionOptionsModel? value) {
                     setState(() {
                       currentValue = value!;
-                      print(currentValue!.qOID);
                     });
                   },
                   groupValue: currentValue,
@@ -83,7 +83,7 @@ class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
       ],
     );
   }
-
+  
   @override
   bool get wantKeepAlive => true;
 }
