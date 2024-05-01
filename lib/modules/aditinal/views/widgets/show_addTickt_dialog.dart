@@ -3,6 +3,7 @@ import 'package:flutter_application_1/modules/aditinal/controllers/cubit/addinal
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<dynamic> showAddDialog(BuildContext context, AddinalVistState state) {
+  print('fffffff');
   final TextEditingController addTextContoller = TextEditingController();
   final keyForm = GlobalKey<FormState>();
   return showDialog(
