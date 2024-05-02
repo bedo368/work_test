@@ -27,7 +27,7 @@ class FileQuestionAnswerModel extends QuestionAnswerModel {
 
   static FileQuestionAnswerModel fromMap(Map<String, dynamic> map) {
     return FileQuestionAnswerModel(
-      questionOption: map['answer'],
+      questionOption: map['questionOption'],
       question: QuestionModel.fromMap(map['question']),
       pStageId: map['pStageId'],
     );
@@ -39,7 +39,7 @@ class FileQuestionAnswerModel extends QuestionAnswerModel {
     String? pStageId,
   }) {
     return FileQuestionAnswerModel(
-      questionOption: answer ?? this.questionOption,
+      questionOption: answer ?? questionOption,
       question: question ?? this.question,
       pStageId: pStageId ?? this.pStageId,
     );
