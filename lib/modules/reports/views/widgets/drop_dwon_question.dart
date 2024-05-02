@@ -4,9 +4,13 @@ import 'package:flutter_application_1/modules/reports/models/question_options_mo
 
 class DropDwonQuestionWidget extends StatefulWidget {
   const DropDwonQuestionWidget(
-      {super.key, required this.question, required this.questionOptions});
+      {super.key,
+      required this.question,
+      required this.questionOptions,
+      required this.onSelected});
   final QuestionModel question;
   final List<QuestionOptionsModel> questionOptions;
+  final Function(dynamic quetionInfo) onSelected;
   @override
   State<DropDwonQuestionWidget> createState() => _DropDwonQuestionWidgetState();
 }
@@ -20,6 +24,8 @@ class _DropDwonQuestionWidgetState extends State<DropDwonQuestionWidget>
     for (var o in widget.questionOptions) {
       if (o.defaultValue == '1') {
         _selectedOption = o;
+        widget.onSelected(
+            {'question': widget.question, 'answer': _selectedOption});
       }
     }
 
@@ -49,6 +55,9 @@ class _DropDwonQuestionWidgetState extends State<DropDwonQuestionWidget>
           onChanged: (newValue) {
             setState(() {
               _selectedOption = newValue!;
+              widget.onSelected(
+                  {'question': widget.question, 'answer': _selectedOption});
+                 
             });
           },
           items: widget.questionOptions

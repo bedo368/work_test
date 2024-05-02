@@ -6,8 +6,9 @@ import 'package:flutter_application_1/modules/reports/views/widgets/drown_dwon_d
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SelectedOptionForObservationQ extends StatefulWidget {
-  const SelectedOptionForObservationQ({super.key, required this.option});
-
+  const SelectedOptionForObservationQ(
+      {super.key, required this.option, required this.onSelectOptionData});
+  final Function(QuestionsOptionDModel optionData) onSelectOptionData;
   @override
   State<SelectedOptionForObservationQ> createState() =>
       _SelectedOptionForObservationQState();
@@ -45,6 +46,9 @@ class _SelectedOptionForObservationQState
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
+          if (slectedOptionData != null) {
+            return;
+          }
           showDialog(
               context: context,
               builder: (context) => Material(
@@ -66,6 +70,8 @@ class _SelectedOptionForObservationQState
                                         setState(() {
                                           slectedOptionData = selected;
                                           type = 'Degree';
+                                          widget.onSelectOptionData(
+                                              slectedOptionData!);
                                         });
                                         Navigator.pop(context);
                                       },
@@ -80,6 +86,8 @@ class _SelectedOptionForObservationQState
                                         setState(() {
                                           slectedOptionData = selected;
                                           type = 'TransferTo';
+                                          widget.onSelectOptionData(
+                                              slectedOptionData!);
                                         });
                                         Navigator.pop(context);
                                       },

@@ -1,9 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
-class QuestionModel {
+class QuestionModel extends Equatable {
   final String qID;
   final String questionOrder;
   final String sectionID;
@@ -18,7 +19,7 @@ class QuestionModel {
   final String? tiCode;
   final String required;
 
-  QuestionModel({
+  const QuestionModel({
     required this.qID,
     required this.questionOrder,
     required this.sectionID,
@@ -113,7 +114,7 @@ class QuestionModel {
       answerType: map['answerType'] as String,
       active: map['active'] as String,
       rd6: map['rd6'] as String,
-      createdAt: map['createdAt'] ,
+      createdAt: map['createdAt'],
       deleted: map['deleted'] as String,
       tiCode: map['tiCode'] != null ? map['tiCode'] as String : null,
       required: map['required'] as String,
@@ -121,6 +122,9 @@ class QuestionModel {
   }
 
   String toJson() => json.encode(toMap());
+
+  @override
+  List<Object?> get props => [qID];
 }
 
 class QuestionsDataModel {

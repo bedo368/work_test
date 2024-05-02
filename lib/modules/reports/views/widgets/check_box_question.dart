@@ -7,9 +7,11 @@ class CheckBoxQuestionWidget extends StatefulWidget {
     super.key,
     required this.question,
     required this.questionOptions,
+    required this.onSelected,
   });
   final QuestionModel question;
   final List<QuestionOptionsModel> questionOptions;
+  final Function(dynamic quetionInfo) onSelected;
 
   @override
   State<CheckBoxQuestionWidget> createState() => _CheckBoxQuestionWidgetState();
@@ -26,6 +28,8 @@ class _CheckBoxQuestionWidgetState extends State<CheckBoxQuestionWidget>
       if (q.defaultValue == '1') {
         currentValue = q;
         _selectedAnswer.add(q);
+        widget.onSelected(
+            {'question': widget.question, 'answer': _selectedAnswer});
       }
     }
 
@@ -73,8 +77,16 @@ class _CheckBoxQuestionWidgetState extends State<CheckBoxQuestionWidget>
                           _selectedAnswer.removeWhere((element) =>
                               element.qOID ==
                               widget.questionOptions[index].qOID);
+                          widget.onSelected({
+                            'question': widget.question,
+                            'answer': _selectedAnswer
+                          });
                         } else {
                           _selectedAnswer.add(widget.questionOptions[index]);
+                          widget.onSelected({
+                            'question': widget.question,
+                            'answer': _selectedAnswer
+                          });
                         }
                       });
                     });

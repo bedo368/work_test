@@ -7,16 +7,18 @@ class RadioQuestionWidget extends StatefulWidget {
     super.key,
     required this.question,
     required this.questionOptions,
+    required this.onSelected,
   });
   final QuestionModel question;
   final List<QuestionOptionsModel> questionOptions;
+  final Function(dynamic quetionInfo) onSelected;
 
   @override
-  State<RadioQuestionWidget> createState() =>
-      _RadioQuestionWidgetState();
+  State<RadioQuestionWidget> createState() => _RadioQuestionWidgetState();
 }
 
-class _RadioQuestionWidgetState extends State<RadioQuestionWidget> with AutomaticKeepAliveClientMixin{
+class _RadioQuestionWidgetState extends State<RadioQuestionWidget>
+    with AutomaticKeepAliveClientMixin {
   QuestionOptionsModel? currentValue;
 
   @override
@@ -24,10 +26,11 @@ class _RadioQuestionWidgetState extends State<RadioQuestionWidget> with Automati
     for (var q in widget.questionOptions) {
       if (q.defaultValue == '1') {
         currentValue = q;
+        widget
+            .onSelected({'question': widget.question, 'answer': currentValue});
       }
     }
 
-    
     super.initState();
   }
 
@@ -68,6 +71,11 @@ class _RadioQuestionWidgetState extends State<RadioQuestionWidget> with Automati
                   onChanged: (QuestionOptionsModel? value) {
                     setState(() {
                       currentValue = value!;
+
+                      widget.onSelected({
+                        'question': widget.question,
+                        'answer': currentValue
+                      });
                     });
                   },
                   groupValue: currentValue,
@@ -83,7 +91,7 @@ class _RadioQuestionWidgetState extends State<RadioQuestionWidget> with Automati
       ],
     );
   }
-  
+
   @override
   bool get wantKeepAlive => true;
 }

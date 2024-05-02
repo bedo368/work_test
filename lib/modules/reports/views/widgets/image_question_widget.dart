@@ -8,9 +8,11 @@ class ImageQuestionWidget extends StatefulWidget {
     super.key,
     required this.question,
     required this.questionOptions,
+    required this.onSelected,
   });
   final QuestionModel question;
   final List<QuestionOptionsModel> questionOptions;
+  final Function(dynamic quetionInfo) onSelected;
 
   @override
   State<ImageQuestionWidget> createState() => _ImageQuestionWidgetState();
@@ -40,6 +42,10 @@ class _ImageQuestionWidgetState extends State<ImageQuestionWidget>
     if (pickedImage != null && imageList.length < imageNum) {
       setState(() {
         imageList.add(pickedImage.path);
+
+        if (imageList.length == imageNum) {
+          widget.onSelected({'question': widget.question, 'answer': imageList});
+        }
       });
     }
   }
@@ -73,6 +79,8 @@ class _ImageQuestionWidgetState extends State<ImageQuestionWidget>
                     if (imageList.length >= imageNum) {
                       setState(() {
                         imageList.clear();
+                        widget.onSelected(
+                            {'question': widget.question, 'answer': null});
                       });
                     } else {
                       _pickImage(ImageSource.gallery);

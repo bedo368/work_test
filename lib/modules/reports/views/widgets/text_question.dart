@@ -7,8 +7,10 @@ class TextQuestionWidget extends StatefulWidget {
   const TextQuestionWidget({
     super.key,
     required this.question,
+    required this.onSelected,
   });
   final QuestionModel question;
+  final Function(dynamic quetionInfo) onSelected;
 
   @override
   State<TextQuestionWidget> createState() => _TextQuestionWidgetState();
@@ -56,6 +58,8 @@ class _TextQuestionWidgetState extends State<TextQuestionWidget>
               controller: questionController,
               onChanged: (p0) {
                 textValue = questionController.text;
+                widget.onSelected(
+                    {'question': widget.question, 'answer': textValue});
               },
             ))
       ],

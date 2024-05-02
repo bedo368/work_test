@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/reports/models/question_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_options_model.dart';
 
-class CheckListQuestionWidget extends StatefulWidget {
-  const CheckListQuestionWidget({
-    super.key,
-    required this.question,
-    required this.questionOptions,
-  });
+class InsCheckListQuestionWidget extends StatefulWidget {
+  const InsCheckListQuestionWidget(
+      {super.key,
+      required this.question,
+      required this.questionOptions,
+      required this.onSelected});
   final QuestionModel question;
   final List<QuestionOptionsModel> questionOptions;
+  final Function(dynamic quetionInfo) onSelected;
 
   @override
-  State<CheckListQuestionWidget> createState() =>
-      _CheckListQuestionWidgetState();
+  State<InsCheckListQuestionWidget> createState() =>
+      _InsCheckListQuestionWidgetState();
 }
 
-class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
+class _InsCheckListQuestionWidgetState extends State<InsCheckListQuestionWidget>
     with AutomaticKeepAliveClientMixin {
   QuestionOptionsModel? currentValue;
 
@@ -25,6 +26,8 @@ class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
     for (var q in widget.questionOptions) {
       if (q.defaultValue == '1') {
         currentValue = q;
+        widget
+            .onSelected({'question': widget.question, 'answer': currentValue});
       }
     }
 
@@ -67,6 +70,10 @@ class _CheckListQuestionWidgetState extends State<CheckListQuestionWidget>
                   onChanged: (QuestionOptionsModel? value) {
                     setState(() {
                       currentValue = value!;
+                      widget.onSelected({
+                        'question': widget.question,
+                        'answer': currentValue
+                      });
                     });
                   },
                   groupValue: currentValue,

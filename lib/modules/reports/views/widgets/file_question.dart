@@ -8,9 +8,11 @@ class FileQuestionWidget extends StatefulWidget {
     super.key,
     required this.question,
     required this.questionOptions,
+    required this.onSelected,
   });
   final QuestionModel question;
   final List<QuestionOptionsModel> questionOptions;
+  final Function(dynamic quetionInfo) onSelected;
 
   @override
   State<FileQuestionWidget> createState() => _FileQuestionWidgetState();
@@ -27,6 +29,7 @@ class _FileQuestionWidgetState extends State<FileQuestionWidget>
     if (result != null) {
       setState(() {
         filePath = result.files.single.path!;
+        widget.onSelected({'question': widget.question, 'answer': filePath});
       });
     } else {}
   }
@@ -51,6 +54,8 @@ class _FileQuestionWidgetState extends State<FileQuestionWidget>
                           setState(() {
                             filePath = '';
                           });
+                          widget.onSelected(
+                              {'question': widget.question, 'answer': null});
                           return;
                         }
                         _openFilePicker();

@@ -11,9 +11,11 @@ class UserSelectQuestionWidget extends StatefulWidget {
     super.key,
     required this.question,
     required this.questionOptions,
+    required this.onSelected,
   });
   final QuestionModel question;
   final List<QuestionOptionsModel> questionOptions;
+  final Function(dynamic quetionInfo) onSelected;
 
   @override
   State<UserSelectQuestionWidget> createState() =>
@@ -22,20 +24,9 @@ class UserSelectQuestionWidget extends StatefulWidget {
 
 class _UserSelectQuestionWidgetState extends State<UserSelectQuestionWidget>
     with AutomaticKeepAliveClientMixin {
-  QuestionOptionsModel? currentValue;
+  QuestionOptionsModel? currentSelectionOption;
 
-  @override
-  void initState() {
-    for (var q in widget.questionOptions) {
-      if (q.defaultValue == '1') {
-        currentValue = q;
-      }
-    }
-
-    super.initState();
-  }
-
-  QuestionsOptionDModel? _selected;
+  QuestionsOptionDModel? _selectedoptionData;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +52,22 @@ class _UserSelectQuestionWidgetState extends State<UserSelectQuestionWidget>
                       ),
                     )
                   : const SizedBox(),
+              currentSelectionOption == null
+                  ? const SizedBox()
+                  : IconButton(
+                      onPressed: () {
+                        setState(() {
+                          currentSelectionOption = null;
+                          _selectedoptionData = null;
+
+                          widget.onSelected(
+                              {'question': widget.question, 'answer': null});
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.cancel,
+                        color: Colors.red,
+                      ))
             ],
           ),
           subtitle: ListView.separated(
@@ -73,9 +80,10 @@ class _UserSelectQuestionWidgetState extends State<UserSelectQuestionWidget>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('${widget.questionOptions[index].answer} '),
-                      Text(_selected != null
-                          ? _selected!.oID == widget.questionOptions[index].qOID
-                              ? _selected!.degreeName
+                      Text(_selectedoptionData != null
+                          ? _selectedoptionData!.oID ==
+                                  widget.questionOptions[index].qOID
+                              ? _selectedoptionData!.degreeName
                               : ''
                           : '')
                     ],
@@ -92,7 +100,7 @@ class _UserSelectQuestionWidgetState extends State<UserSelectQuestionWidget>
                             cancelButton: TextButton(
                               onPressed: () {
                                 setState(() {
-                                  _selected = null;
+                                  _selectedoptionData = null;
                                   Navigator.pop(context);
                                 });
                               },
@@ -103,14 +111,22 @@ class _UserSelectQuestionWidgetState extends State<UserSelectQuestionWidget>
                               (index) => CupertinoActionSheetAction(
                                 isDefaultAction:
                                     currentSelectQuestionOptiondata[index] ==
-                                            _selected
+                                            _selectedoptionData
                                         ? true
                                         : false,
                                 onPressed: () {
                                   setState(() {
-                                    currentValue = value;
-                                    _selected =
+                                    currentSelectionOption = value;
+                                    _selectedoptionData =
                                         currentSelectQuestionOptiondata[index];
+
+                                    widget.onSelected({
+                                      'question': widget.question,
+                                      'answer': {
+                                        'option': currentSelectionOption,
+                                        'optionData': _selectedoptionData
+                                      }
+                                    });
                                   });
                                   Navigator.pop(context);
                                 },
@@ -122,7 +138,7 @@ class _UserSelectQuestionWidgetState extends State<UserSelectQuestionWidget>
                               ),
                             )));
                   },
-                  groupValue: currentValue,
+                  groupValue: currentSelectionOption,
                 );
               },
               separatorBuilder: (context, index) {
