@@ -57,6 +57,11 @@ class _TextQuestionWidgetState extends State<TextQuestionWidget>
             subtitle: CustomTextField(
               controller: questionController,
               onChanged: (p0) {
+                if (p0 == '') {
+                  widget.onSelected(
+                      {'question': widget.question, 'answer': null});
+                  return;
+                }
                 textValue = questionController.text;
                 widget.onSelected(
                     {'question': widget.question, 'answer': textValue});

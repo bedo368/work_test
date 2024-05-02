@@ -88,8 +88,8 @@ class _ObesrvationQuestionWidgetState extends State<ObesrvationQuestionWidget> {
                           widget.onSelected({
                             'question': widget.question,
                             'answer': {
-                              'option': _selectedOption,
-                              'optionData': currentSelectedOptionData
+                              'questionOption': _selectedOption,
+                              'questionOptionData': currentSelectedOptionData
                             }
                           });
                         }

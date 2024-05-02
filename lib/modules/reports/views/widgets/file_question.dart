@@ -31,7 +31,9 @@ class _FileQuestionWidgetState extends State<FileQuestionWidget>
         filePath = result.files.single.path!;
         widget.onSelected({'question': widget.question, 'answer': filePath});
       });
-    } else {}
+    } else {
+      widget.onSelected({'question': widget.question, 'answer': null});
+    }
   }
 
   @override

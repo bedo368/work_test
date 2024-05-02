@@ -12,6 +12,7 @@ class CheckboxQuestionAnswerModel extends QuestionAnswerModel {
 
   final List<QuestionOptionsModel> questionOptions;
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'questionOptions':

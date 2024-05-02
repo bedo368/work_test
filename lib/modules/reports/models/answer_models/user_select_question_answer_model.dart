@@ -1,42 +1,48 @@
 import 'package:flutter_application_1/modules/reports/models/answer_models/question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_model.dart';
+import 'package:flutter_application_1/modules/reports/models/question_options_data_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_options_model.dart';
 import 'package:hive/hive.dart';
 
-class RadioQuestionAnswerModel extends QuestionAnswerModel {
-  RadioQuestionAnswerModel({
+class UserSelectQuestionAnswerModel extends QuestionAnswerModel {
+  UserSelectQuestionAnswerModel({
     required this.questionOption,
     required super.question,
     required super.pStageId,
+    required this.questionOptionData,
   });
 
   final QuestionOptionsModel questionOption;
+  final QuestionsOptionDModel questionOptionData;
 
   @override
   Map<String, dynamic> toMap() {
     return {
       'questionOption': questionOption.toMap(),
       'question': question.toMap(),
+      'pStageId': pStageId,
+      'questionOptionData': questionOptionData.toMap(),
     };
   }
 
-  static RadioQuestionAnswerModel fromMap(Map<String, dynamic> map) {
-    return RadioQuestionAnswerModel(
+  static UserSelectQuestionAnswerModel fromMap(Map<String, dynamic> map) {
+    return UserSelectQuestionAnswerModel(
       questionOption: QuestionOptionsModel.fromMap(map['questionOption']),
       question: QuestionModel.fromMap(map['question']),
-      pStageId: map['pStageId'], //
+      pStageId: map['pStageId'],
+      questionOptionData: map['questionOptionData'], //
     );
   }
 
-  RadioQuestionAnswerModel copyWith({
+  UserSelectQuestionAnswerModel copyWith({
     QuestionOptionsModel? questionOption,
     QuestionModel? question,
   }) {
-    return RadioQuestionAnswerModel(
-      questionOption: questionOption ?? this.questionOption,
-      question: question ?? this.question,
-      pStageId: pStageId,
-    );
+    return UserSelectQuestionAnswerModel(
+        questionOption: questionOption ?? this.questionOption,
+        question: question ?? this.question,
+        pStageId: pStageId,
+        questionOptionData: questionOptionData);
   }
 
   @override
@@ -45,28 +51,31 @@ class RadioQuestionAnswerModel extends QuestionAnswerModel {
   }
 }
 
-class RadioQuestionAnswerModelAdapter
-    extends TypeAdapter<RadioQuestionAnswerModel> {
+class UserSelectQuestionAnswerModelAdapter
+    extends TypeAdapter<UserSelectQuestionAnswerModel> {
   @override
-  final int typeId = 6;
+  final int typeId = 14;
 
   @override
-  RadioQuestionAnswerModel read(BinaryReader reader) {
+  UserSelectQuestionAnswerModel read(BinaryReader reader) {
     var questionOption = QuestionOptionsModel.fromMap(reader.read());
     var question = QuestionModel.fromMap(reader.read());
     var pStageId = reader.read();
+    var questionOptionData = QuestionsOptionDModel.fromMap(reader.read());
 
-    return RadioQuestionAnswerModel(
+    return UserSelectQuestionAnswerModel(
       questionOption: questionOption,
       question: question,
       pStageId: pStageId,
+      questionOptionData: questionOptionData,
     );
   }
 
   @override
-  void write(BinaryWriter writer, RadioQuestionAnswerModel obj) {
+  void write(BinaryWriter writer, UserSelectQuestionAnswerModel obj) {
     writer.write(obj.questionOption.toMap());
     writer.write(obj.question.toMap());
     writer.write(obj.pStageId);
+    writer.write(obj.questionOptionData.toMap());
   }
 }

@@ -3,8 +3,10 @@ import 'package:flutter_application_1/modules/reports/api/server/question_api/qu
 import 'package:flutter_application_1/modules/reports/api/server/satage_api/repo/stage_repo.dart';
 import 'package:flutter_application_1/modules/reports/api/server/sections_api/section_repo/section_api_repo.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/checkbox_question_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/observation_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/radio_question_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/text_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_options_data_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_options_model.dart';
@@ -63,6 +65,13 @@ class FetchAllAndStoreInLocalStorage {
     }
     if (!_hive.isAdapterRegistered(RadioQuestionAnswerModelAdapter().typeId)) {
       _hive.registerAdapter(RadioQuestionAnswerModelAdapter());
+    }
+    if (!_hive.isAdapterRegistered(TextQuestionAnswerModelAdapter().typeId)) {
+      _hive.registerAdapter(TextQuestionAnswerModelAdapter());
+    }
+    if (!_hive
+        .isAdapterRegistered(ObservationQuestionAnswerModelAdapter().typeId)) {
+      _hive.registerAdapter(ObservationQuestionAnswerModelAdapter());
     }
   }
 

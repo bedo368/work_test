@@ -123,8 +123,10 @@ class _UserSelectQuestionWidgetState extends State<UserSelectQuestionWidget>
                                     widget.onSelected({
                                       'question': widget.question,
                                       'answer': {
-                                        'option': currentSelectionOption,
-                                        'optionData': _selectedoptionData
+                                        'questionOption':
+                                            currentSelectionOption,
+                                        'questionOptionData':
+                                            _selectedoptionData
                                       }
                                     });
                                   });

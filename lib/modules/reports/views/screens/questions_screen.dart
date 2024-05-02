@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/reports/controllers/questin_cubit/question_cubit.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/checkbox_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/section_model.dart';
@@ -44,7 +43,6 @@ class _QuestionScreenState extends State<QuestionScreen>
               final res = ProjectStageAnserModel(
                   pStageId: '22', questionAnswers: answers);
 
-              // log(res.toString());
               testStore(res);
             },
           ),
@@ -63,12 +61,27 @@ class _QuestionScreenState extends State<QuestionScreen>
                               element.qID == questionCubit.questions[index].qID)
                           .toList(),
                       onSelected: (quetionInfo) {
-                        final anser = QuestionAnswerModel.createQuestionAnswer(
-                            questionAndAnserData: quetionInfo, pStageId: '22');
+                        log(quetionInfo.toString());
+                        if (quetionInfo['answer'] != null) {
+                          final anser =
+                              QuestionAnswerModel.createQuestionAnswer(
+                                  questionAndAnserData: quetionInfo,
+                                  pStageId: '22');
 
-                        answers.add(anser);
+                          final isAnserExistBefore = answers.indexWhere(
+                              (element) =>
+                                  element.question.qID == anser.question.qID);
 
-                        log(answers.toString());
+                          if (isAnserExistBefore == -1) {
+                            answers.add(anser);
+                          } else {
+                            answers[isAnserExistBefore] = anser;
+                          }
+                        } else if (quetionInfo['answer'] == null) {
+                          answers.removeWhere((element) =>
+                              element.question.qID ==
+                              quetionInfo['question'].qID);
+                        }
                       },
                     );
                   },
