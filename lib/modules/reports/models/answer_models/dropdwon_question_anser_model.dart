@@ -29,17 +29,17 @@ class DropDownQuestionAnswerModel extends QuestionAnswerModel {
     );
   }
 
-  // DropDownQuestionAnswerModel copyWith({
-  //   QuestionOptionsModel? questionOptions,
-  //   QuestionModel? question,
-  //   String? pStageId,
-  // }) {
-  //   return DropDownQuestionAnswerModel(
-  //     questionOptions: questionOptions ?? this.questionOptions,
-  //     question: question ?? this.question,
-  //     pStageId: pStageId ?? this.pStageId,
-  //   );
-  // }
+  DropDownQuestionAnswerModel copyWith({
+    QuestionOptionsModel? questionOptions,
+    QuestionModel? question,
+    String? pStageId,
+  }) {
+    return DropDownQuestionAnswerModel(
+      questionOptions: questionOptions ?? this.questionOptions,
+      question: question ?? this.question,
+      pStageId: pStageId ?? this.pStageId,
+    );
+  }
 
   @override
   String toString() {
@@ -51,10 +51,11 @@ class DropDownQuestionAnswerModelAdapter
     extends TypeAdapter<DropDownQuestionAnswerModel> {
   @override
   final int typeId = 10;
+
   @override
   DropDownQuestionAnswerModel read(BinaryReader reader) {
-    var questionOptions = QuestionOptionsModel.fromMap(reader.read());
-    var question = QuestionModel.fromMap(reader.read());
+    var questionOptions = reader.read();
+    var question = reader.read();
     var pStageId = reader.read();
 
     return DropDownQuestionAnswerModel(
@@ -66,8 +67,8 @@ class DropDownQuestionAnswerModelAdapter
 
   @override
   void write(BinaryWriter writer, DropDownQuestionAnswerModel obj) {
-    writer.write(obj.questionOptions);
-    writer.write(obj.question);
+    writer.write<QuestionOptionsModel>(obj.questionOptions);
+    writer.write<QuestionModel>(obj.question);
     writer.write(obj.pStageId);
   }
 }

@@ -25,6 +25,7 @@ class QuestionCubit extends Cubit<QuestionState> {
 
   Future<void> fetchQuestionAndQutionDataBySectionId(
       {required String sectionId}) async {
+    emit(QuestionLoadingState());
     try {
       questionOptionData.clear();
       questionOption.clear();

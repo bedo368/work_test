@@ -22,7 +22,7 @@ class QuestionOptionsModel extends Equatable {
     required this.deleted,
   });
 
-  factory QuestionOptionsModel.fromJson(Map<String, dynamic> json) {
+  factory QuestionOptionsModel.fromJson(Map<dynamic, dynamic> json) {
     return QuestionOptionsModel(
       qOID: json['QOID'] ?? '',
       qID: json['QID'] ?? '',

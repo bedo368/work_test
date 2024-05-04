@@ -103,7 +103,7 @@ class QuestionModel extends Equatable {
     };
   }
 
-  factory QuestionModel.fromMap(Map<String, dynamic> map) {
+  factory QuestionModel.fromMap(Map<dynamic, dynamic> map) {
     return QuestionModel(
       qID: map['qID'] as String,
       questionOrder: map['questionOrder'] as String,

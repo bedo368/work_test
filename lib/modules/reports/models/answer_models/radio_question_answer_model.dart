@@ -48,7 +48,7 @@ class RadioQuestionAnswerModel extends QuestionAnswerModel {
 class RadioQuestionAnswerModelAdapter
     extends TypeAdapter<RadioQuestionAnswerModel> {
   @override
-  final int typeId = 6;
+  final int typeId = 16;
 
   @override
   RadioQuestionAnswerModel read(BinaryReader reader) {

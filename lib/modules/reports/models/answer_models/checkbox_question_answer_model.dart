@@ -46,18 +46,6 @@ class CheckboxQuestionAnswerModel extends QuestionAnswerModel {
       pStageId: pStageId,
     );
   }
-
-  // Future<void> storeInHive() async {
-  //   var box = await Hive.openBox<CheckboxQuestionAnswerModel>(
-  //       'checkboxQuestionAnswers');
-  //   box.add(this);
-  // }
-
-  // Future<CheckboxQuestionAnswerModel> getFormHive() async {
-  //   var box = await Hive.openBox<CheckboxQuestionAnswerModel>(
-  //       'checkboxQuestionAnswers');
-  //   return box.values.firstWhere((element) => element == this);
-  // }
 }
 
 class CheckboxQuestionAnswerModelAdapter
@@ -67,17 +55,14 @@ class CheckboxQuestionAnswerModelAdapter
 
   @override
   CheckboxQuestionAnswerModel read(BinaryReader reader) {
-    var questionOptionsLength = reader.readByte();
-    var questionOptions = <QuestionOptionsModel>[];
-    for (var i = 0; i < questionOptionsLength; i++) {
-      questionOptions.add(QuestionOptionsModel.fromMap(reader.readMap()));
-    }
-
+    var questionOptions = (reader.read() as List<dynamic>)
+        .map((item) => QuestionOptionsModel.fromMap(item))
+        .toList();
     var question = QuestionModel.fromMap(reader.read());
     var pStageId = reader.read();
 
     return CheckboxQuestionAnswerModel(
-      questionOptions: questionOptions,
+      questionOptions: questionOptions.cast<QuestionOptionsModel>(),
       question: question,
       pStageId: pStageId,
     );
@@ -85,12 +70,8 @@ class CheckboxQuestionAnswerModelAdapter
 
   @override
   void write(BinaryWriter writer, CheckboxQuestionAnswerModel obj) {
-    writer.writeByte(obj.questionOptions.length);
-    for (var option in obj.questionOptions) {
-      writer.writeMap(option.toMap());
-    }
-
-    writer.write(obj.question.toMap());
+    writer.write(obj.questionOptions.map((item) => item.toMap()).toList());
+    writer.write<Map<String, dynamic>>(obj.question.toMap());
     writer.write(obj.pStageId);
   }
 }

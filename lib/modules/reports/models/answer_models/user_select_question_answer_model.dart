@@ -25,7 +25,7 @@ class UserSelectQuestionAnswerModel extends QuestionAnswerModel {
     };
   }
 
-  static UserSelectQuestionAnswerModel fromMap(Map<String, dynamic> map) {
+  static UserSelectQuestionAnswerModel fromMap(Map<dynamic, dynamic> map) {
     return UserSelectQuestionAnswerModel(
       questionOption: QuestionOptionsModel.fromMap(map['questionOption']),
       question: QuestionModel.fromMap(map['question']),

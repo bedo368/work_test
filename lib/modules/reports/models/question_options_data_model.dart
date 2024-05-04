@@ -89,7 +89,7 @@ class QuestionsOptionDModel {
     };
   }
 
-  factory QuestionsOptionDModel.fromMap(Map<String, dynamic> map) {
+  factory QuestionsOptionDModel.fromMap(Map<dynamic, dynamic> map) {
     return QuestionsOptionDModel(
       qodID: map['qodID'] as String,
       oID: map['oID'] as String,

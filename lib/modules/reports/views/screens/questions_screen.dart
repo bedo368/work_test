@@ -22,7 +22,7 @@ class _QuestionScreenState extends State<QuestionScreen>
 
   List<QuestionAnswerModel> answers = [];
 
-  Future<void> testStore(ProjectStageAnserModel p) async {
+  Future<void> testStore(ProjectStageAnswerModel p) async {
     await p.storeInHive();
     final resfromhive = await p.getFormHive();
 
@@ -33,20 +33,22 @@ class _QuestionScreenState extends State<QuestionScreen>
   int currentAnswerdrequiredQuestionCount = 0;
   @override
   void initState() {
-    final questionCubit = context.read<QuestionCubit>();
-
-    Future.delayed(Duration.zero).then((value) {
-      for (var q in questionCubit.questions) {
-        log(q.toMap().toString());
-        if (q.required == '1') {
-          setState(() {
-            requiredQuestionCount++;
-          });
-        }
-      }
-    });
-
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final questionCubit = context.read<QuestionCubit>();
+
+      Future.delayed(Duration.zero).then((value) {
+        for (var q in questionCubit.questions) {
+          log(q.toMap().toString());
+          if (q.required == '1') {
+            setState(() {
+              requiredQuestionCount++;
+            });
+          }
+        }
+      });
+    });
   }
 
   @override
@@ -63,8 +65,8 @@ class _QuestionScreenState extends State<QuestionScreen>
                   ? TextButton(
                       child: const Text('try add '),
                       onPressed: () {
-                        final res = ProjectStageAnserModel(
-                            pStageId: '22', questionAnswers: answers);
+                        final res = ProjectStageAnswerModel(
+                            pStageId: '88', questionAnswers: answers);
 
                         testStore(res);
                       },
@@ -90,7 +92,7 @@ class _QuestionScreenState extends State<QuestionScreen>
                           final anser =
                               QuestionAnswerModel.createQuestionAnswer(
                                   questionAndAnserData: quetionInfo,
-                                  pStageId: '22');
+                                  pStageId: '88');
 
                           final isAnserExistBefore = answers.indexWhere(
                               (element) =>
@@ -100,11 +102,13 @@ class _QuestionScreenState extends State<QuestionScreen>
                             answers.add(anser);
 
                             if (anser.question.required == '1') {
-                              currentAnswerdrequiredQuestionCount++;
-                              if (currentAnswerdrequiredQuestionCount ==
-                                  requiredQuestionCount) {
-                                setState(() {});
-                              }
+                              Future.delayed(Duration.zero).then(
+                                (value) {
+                                  setState(() {
+                                    currentAnswerdrequiredQuestionCount++;
+                                  });
+                                },
+                              );
                             }
                           } else {
                             answers[isAnserExistBefore] = anser;
