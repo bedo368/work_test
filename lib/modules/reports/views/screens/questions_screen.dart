@@ -29,6 +29,26 @@ class _QuestionScreenState extends State<QuestionScreen>
     log(resfromhive!.toMap().toString());
   }
 
+  int requiredQuestionCount = 0;
+  int currentAnswerdrequiredQuestionCount = 0;
+  @override
+  void initState() {
+    final questionCubit = context.read<QuestionCubit>();
+
+    Future.delayed(Duration.zero).then((value) {
+      for (var q in questionCubit.questions) {
+        log(q.toMap().toString());
+        if (q.required == '1') {
+          setState(() {
+            requiredQuestionCount++;
+          });
+        }
+      }
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -36,16 +56,20 @@ class _QuestionScreenState extends State<QuestionScreen>
       listener: (context, state) {},
       builder: (context, state) {
         final questionCubit = context.read<QuestionCubit>();
-        return Scaffold(
-          floatingActionButton: TextButton(
-            child: const Text('try add '),
-            onPressed: () {
-              final res = ProjectStageAnserModel(
-                  pStageId: '22', questionAnswers: answers);
 
-              testStore(res);
-            },
-          ),
+        return Scaffold(
+          floatingActionButton:
+              currentAnswerdrequiredQuestionCount == requiredQuestionCount
+                  ? TextButton(
+                      child: const Text('try add '),
+                      onPressed: () {
+                        final res = ProjectStageAnserModel(
+                            pStageId: '22', questionAnswers: answers);
+
+                        testStore(res);
+                      },
+                    )
+                  : null,
           appBar: AppBar(
             backgroundColor: Colors.blueAccent,
             title: Text(widget.section.sectionName),
@@ -74,6 +98,14 @@ class _QuestionScreenState extends State<QuestionScreen>
 
                           if (isAnserExistBefore == -1) {
                             answers.add(anser);
+
+                            if (anser.question.required == '1') {
+                              currentAnswerdrequiredQuestionCount++;
+                              if (currentAnswerdrequiredQuestionCount ==
+                                  requiredQuestionCount) {
+                                setState(() {});
+                              }
+                            }
                           } else {
                             answers[isAnserExistBefore] = anser;
                           }
@@ -81,6 +113,12 @@ class _QuestionScreenState extends State<QuestionScreen>
                           answers.removeWhere((element) =>
                               element.question.qID ==
                               quetionInfo['question'].qID);
+
+                          if (quetionInfo['question'].required == '1') {
+                            setState(() {
+                              currentAnswerdrequiredQuestionCount--;
+                            });
+                          }
                         }
                       },
                     );
