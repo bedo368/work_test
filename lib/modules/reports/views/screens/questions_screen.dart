@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/modules/reports/controllers/questin_cubit/question_cubit.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/question_answer_model.dart';
@@ -29,8 +30,9 @@ class _QuestionScreenState extends State<QuestionScreen>
     log(resfromhive!.toMap().toString());
   }
 
-  int requiredQuestionCount = 0;
-  int currentAnswerdrequiredQuestionCount = 0;
+  final ValueNotifier<int> requiredQuestionNo = ValueNotifier<int>(0);
+  final ValueNotifier<int> currentAnswerdrequiredQuestionCount =
+      ValueNotifier<int>(0);
   @override
   void initState() {
     super.initState();
@@ -42,9 +44,7 @@ class _QuestionScreenState extends State<QuestionScreen>
         for (var q in questionCubit.questions) {
           log(q.toMap().toString());
           if (q.required == '1') {
-            setState(() {
-              requiredQuestionCount++;
-            });
+            requiredQuestionNo.value += 1;
           }
         }
       });
@@ -60,18 +60,31 @@ class _QuestionScreenState extends State<QuestionScreen>
         final questionCubit = context.read<QuestionCubit>();
 
         return Scaffold(
-          floatingActionButton:
-              currentAnswerdrequiredQuestionCount == requiredQuestionCount
-                  ? TextButton(
-                      child: const Text('try add '),
-                      onPressed: () {
-                        final res = ProjectStageAnswerModel(
-                            pStageId: '88', questionAnswers: answers);
+          floatingActionButton: ValueListenableBuilder(
+              valueListenable: currentAnswerdrequiredQuestionCount,
+              builder: (context, value, widget) {
+                print(value);
+                return value == requiredQuestionNo.value
+                    ? SizedBox(
+                        width: MediaQuery.of(context).size.width * .5,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.cyan,
+                          ),
+                          child: const Text(
+                            'try add ',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {
+                            final res = ProjectStageAnswerModel(
+                                pStageId: '88', questionAnswers: answers);
 
-                        testStore(res);
-                      },
-                    )
-                  : null,
+                            testStore(res);
+                          },
+                        ),
+                      )
+                    : const SizedBox();
+              }),
           appBar: AppBar(
             backgroundColor: Colors.blueAccent,
             title: Text(widget.section.sectionName),
@@ -102,13 +115,9 @@ class _QuestionScreenState extends State<QuestionScreen>
                             answers.add(anser);
 
                             if (anser.question.required == '1') {
-                              Future.delayed(Duration.zero).then(
-                                (value) {
-                                  setState(() {
-                                    currentAnswerdrequiredQuestionCount++;
-                                  });
-                                },
-                              );
+                              Future.delayed(Duration.zero).then((value) {
+                                currentAnswerdrequiredQuestionCount.value += 1;
+                              });
                             }
                           } else {
                             answers[isAnserExistBefore] = anser;
@@ -119,9 +128,7 @@ class _QuestionScreenState extends State<QuestionScreen>
                               quetionInfo['question'].qID);
 
                           if (quetionInfo['question'].required == '1') {
-                            setState(() {
-                              currentAnswerdrequiredQuestionCount--;
-                            });
+                            currentAnswerdrequiredQuestionCount.value -= 1;
                           }
                         }
                       },

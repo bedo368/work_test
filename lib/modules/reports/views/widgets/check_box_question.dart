@@ -28,8 +28,10 @@ class _CheckBoxQuestionWidgetState extends State<CheckBoxQuestionWidget>
       if (q.defaultValue == '1') {
         currentValue = q;
         _selectedAnswer.add(q);
-        widget.onSelected(
-            {'question': widget.question, 'answer': _selectedAnswer});
+        Future.delayed(Duration.zero).then((value) {
+          widget.onSelected(
+              {'question': widget.question, 'answer': _selectedAnswer});
+        });
       }
     }
 
@@ -48,7 +50,7 @@ class _CheckBoxQuestionWidgetState extends State<CheckBoxQuestionWidget>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(child: Text(widget.question.qTitle)),
-              widget.question.required == '1'
+              widget.question.required != '1'
                   ? const Align(
                       alignment: Alignment.topRight,
                       child: Text(
@@ -79,7 +81,8 @@ class _CheckBoxQuestionWidgetState extends State<CheckBoxQuestionWidget>
                               widget.questionOptions[index].qOID);
                           widget.onSelected({
                             'question': widget.question,
-                            'answer': _selectedAnswer
+                            'answer':
+                                _selectedAnswer.isEmpty ? null : _selectedAnswer
                           });
                         } else {
                           _selectedAnswer.add(widget.questionOptions[index]);
