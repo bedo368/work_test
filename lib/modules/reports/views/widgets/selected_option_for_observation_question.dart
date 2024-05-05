@@ -46,6 +46,7 @@ class _SelectedOptionForObservationQState
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
+          // TODO : if i want the user to be able to change the selected value without cancel the whole question
           if (slectedOptionData != null) {
             return;
           }
@@ -108,7 +109,7 @@ class _SelectedOptionForObservationQState
             children: [
               Text('${widget.option.answer}  '),
               Text(
-                ' $type : ${slectedOptionData != null ? type != null ? type == 'Degree' ? slectedOptionData!.degreeName : slectedOptionData!.transferName : '' : ''}',
+                ' ${type ?? 'please answer the selected option'} : ${slectedOptionData != null ? type != null ? type == 'Degree' ? slectedOptionData!.degreeName : slectedOptionData!.transferName : '' : ''}',
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
               )
             ],
