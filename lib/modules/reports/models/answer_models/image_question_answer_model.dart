@@ -4,22 +4,22 @@ import 'package:hive/hive.dart';
 
 class ImageQuestionAnswerModel extends QuestionAnswerModel {
   ImageQuestionAnswerModel({
-    required this.questionOption,
+    required this.questionOptions,
     required super.question,
     required super.pStageId,
   });
 
-  final List<String> questionOption;
+  final List<String> questionOptions;
 
   @override
   String toString() {
-    return 'TextQuestionAnswerModel(answer: $questionOption, question: $question, pStageId: $pStageId)';
+    return 'ImageQuestionAnswerModel(questionOption: $questionOptions, question: $question, pStageId: $pStageId)';
   }
 
   @override
   Map<String, dynamic> toMap() {
     return {
-      'questionOption': questionOption,
+      'questionOption': questionOptions,
       'question': question.toMap(),
       'pStageId': pStageId,
     };
@@ -27,7 +27,7 @@ class ImageQuestionAnswerModel extends QuestionAnswerModel {
 
   static ImageQuestionAnswerModel fromMap(Map<String, dynamic> map) {
     return ImageQuestionAnswerModel(
-      questionOption: map['answer'],
+      questionOptions: map['answer'],
       question: QuestionModel.fromMap(map['question']),
       pStageId: map['pStageId'],
     );
@@ -39,7 +39,7 @@ class ImageQuestionAnswerModel extends QuestionAnswerModel {
     String? pStageId,
   }) {
     return ImageQuestionAnswerModel(
-      questionOption: answer ?? questionOption,
+      questionOptions: answer ?? questionOptions,
       question: question ?? this.question,
       pStageId: pStageId ?? this.pStageId,
     );
@@ -58,7 +58,7 @@ class ImageQuestionAnswerModelAdapter
     final pStageId = reader.read();
 
     return ImageQuestionAnswerModel(
-      questionOption: answer,
+      questionOptions: answer,
       question: question,
       pStageId: pStageId,
     );
@@ -66,7 +66,7 @@ class ImageQuestionAnswerModelAdapter
 
   @override
   void write(BinaryWriter writer, ImageQuestionAnswerModel obj) {
-    writer.write(obj.questionOption);
+    writer.write(obj.questionOptions);
     writer.write(obj.question.toMap());
     writer.write(obj.pStageId);
   }

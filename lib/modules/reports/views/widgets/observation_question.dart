@@ -80,11 +80,30 @@ class _ObesrvationQuestionWidgetState extends State<ObesrvationQuestionWidget> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return SelectedOptionForObservationQ(
-                      onSelectOptionData: (optiondata) {
-                        currentSelectedOptionData.add(optiondata);
+                      removeSelectedOptionData: (option) {
+                        setState(() {
+                          currentSelectedOptionData.removeWhere(
+                              (element) => option.qOID == element.oID);
+                          _selectedOption.removeWhere(
+                              (element) => element.qOID == option.qOID);
+                        });
 
+                        if (_selectedOption.isEmpty) {
+                          widget.onSelected(
+                              {'question': widget.question, 'answer': null});
+                        }
+                      },
+                      onSelectOptionData: (optiondata) {
+                        currentSelectedOptionData.removeWhere(
+                            (element) => optiondata.oID == element.oID);
+                        currentSelectedOptionData.add(optiondata);
+                        if (_selectedOption.isEmpty) {
+                          widget.onSelected(
+                              {'question': widget.question, 'answer': null});
+                        }
                         if (_selectedOption.length ==
-                            currentSelectedOptionData.length) {
+                                currentSelectedOptionData.length &&
+                            _selectedOption.isNotEmpty) {
                           widget.onSelected({
                             'question': widget.question,
                             'answer': {

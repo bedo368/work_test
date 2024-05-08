@@ -1,8 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
-class QuestionsOptionDModel {
+class QuestionsOptionDModel extends Equatable {
   final String qodID;
   final String oID;
   final dynamic qData;
@@ -108,6 +109,10 @@ class QuestionsOptionDModel {
   String toJson() {
     return json.encode(toMap());
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [qodID, oID];
 }
 
 class QuestionOptionDDataModel {

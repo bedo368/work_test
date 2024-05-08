@@ -48,7 +48,7 @@ class ObservationQuestionAnswerModel extends QuestionAnswerModel {
 
   @override
   String toString() {
-    return 'RadioQuestionAnswerModel(questionOption: $questionOption, question: $question, pStageId: $pStageId)';
+    return 'ObservationQuestionAnswerModel(questionOption: $questionOption, question: $question, pStageId: $pStageId , questionOptionData: $questionOptionData)';
   }
 }
 

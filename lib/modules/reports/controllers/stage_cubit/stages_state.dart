@@ -18,3 +18,11 @@ final class StagesErrorState extends StagesState {
 }
 
 final class StagesGetSucessState extends StagesState {}
+
+final class StagesGetProductStageIdSucessState extends StagesState {
+  final String productStageId;
+
+  const StagesGetProductStageIdSucessState({required this.productStageId});
+}
+
+final class StagesGetProductStageIdLoadingState extends StagesState {}

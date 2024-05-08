@@ -29,8 +29,9 @@ class UserSelectQuestionAnswerModel extends QuestionAnswerModel {
     return UserSelectQuestionAnswerModel(
       questionOption: QuestionOptionsModel.fromMap(map['questionOption']),
       question: QuestionModel.fromMap(map['question']),
+      questionOptionData:
+          QuestionsOptionDModel.fromMap(map['questionOptionData']),
       pStageId: map['pStageId'],
-      questionOptionData: map['questionOptionData'], //
     );
   }
 
@@ -47,7 +48,7 @@ class UserSelectQuestionAnswerModel extends QuestionAnswerModel {
 
   @override
   String toString() {
-    return 'RadioQuestionAnswerModel(questionOption: $questionOption, question: $question, pStageId: $pStageId)';
+    return 'UserSelectQuestionAnswerModel(questionOption: $questionOption, question: $question, pStageId: $pStageId , questionOptionData: $questionOptionData)';
   }
 }
 

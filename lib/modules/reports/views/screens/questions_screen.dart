@@ -1,17 +1,24 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/modules/reports/api/server/fetch_all_api/fetch_all.dart';
 import 'package:flutter_application_1/modules/reports/controllers/questin_cubit/question_cubit.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/section_model.dart';
+import 'package:flutter_application_1/modules/reports/models/stage_models.dart';
+import 'package:flutter_application_1/modules/reports/views/screens/sections_screen.dart';
 import 'package:flutter_application_1/modules/reports/views/widgets/select_question_by_type.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 
 class QuestionScreen extends StatefulWidget {
-  const QuestionScreen({super.key, required this.section});
+  const QuestionScreen(
+      {super.key, required this.section, required this.pStageId});
   final SectionModel section;
+  final String pStageId;
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -27,7 +34,20 @@ class _QuestionScreenState extends State<QuestionScreen>
     await p.storeInHive();
     final resfromhive = await p.getFormHive();
 
-    log(resfromhive!.toMap().toString());
+    log(resfromhive!.toString());
+    final stagesBox = Hive.box<StageModel>(hiveStageBox);
+
+    final stage = stagesBox.values
+        .firstWhere((element) => element.stageID == widget.section.stageID);
+    Navigator.popUntil(context, (route) => route.isFirst);
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(
+            builder: (c) => SectionScreen(
+                  stage: stage,
+                  pStageId: p.pStageId,
+                )))
+        .then((value) {});
   }
 
   final ValueNotifier<int> requiredQuestionNo = ValueNotifier<int>(0);
@@ -53,6 +73,7 @@ class _QuestionScreenState extends State<QuestionScreen>
 
   @override
   Widget build(BuildContext context) {
+    final section = widget.section;
     super.build(context);
     return BlocConsumer<QuestionCubit, QuestionState>(
       listener: (context, state) {},
@@ -62,8 +83,7 @@ class _QuestionScreenState extends State<QuestionScreen>
         return Scaffold(
           floatingActionButton: ValueListenableBuilder(
               valueListenable: currentAnswerdrequiredQuestionCount,
-              builder: (context, value, widget) {
-                print(value);
+              builder: (context, value, w) {
                 return value == requiredQuestionNo.value
                     ? SizedBox(
                         width: MediaQuery.of(context).size.width * .5,
@@ -77,7 +97,9 @@ class _QuestionScreenState extends State<QuestionScreen>
                           ),
                           onPressed: () {
                             final res = ProjectStageAnswerModel(
-                                pStageId: '88', questionAnswers: answers);
+                                pStageId: widget.pStageId,
+                                questionAnswers: answers,
+                                sectionId: section.sectionID);
 
                             testStore(res);
                           },
@@ -88,6 +110,10 @@ class _QuestionScreenState extends State<QuestionScreen>
           appBar: AppBar(
             backgroundColor: Colors.blueAccent,
             title: Text(widget.section.sectionName),
+            // leading: IconButton(
+            //   icon: const Icon(Icons.arrow_back),
+            //   onPressed: () {},
+            // ),
           ),
           body: state is QuestionLoadingState
               ? const Center(child: CircularProgressIndicator())
@@ -100,12 +126,11 @@ class _QuestionScreenState extends State<QuestionScreen>
                               element.qID == questionCubit.questions[index].qID)
                           .toList(),
                       onSelected: (quetionInfo) {
-                        log(quetionInfo.toString());
                         if (quetionInfo['answer'] != null) {
                           final anser =
                               QuestionAnswerModel.createQuestionAnswer(
                                   questionAndAnserData: quetionInfo,
-                                  pStageId: '88');
+                                  pStageId: widget.pStageId);
 
                           final isAnserExistBefore = answers.indexWhere(
                               (element) =>

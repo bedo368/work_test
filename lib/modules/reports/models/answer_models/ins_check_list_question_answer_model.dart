@@ -41,7 +41,7 @@ class InsCheckListQuestionAnswerModel extends QuestionAnswerModel {
 
   @override
   String toString() {
-    return 'RadioQuestionAnswerModel(questionOption: $questionOption, question: $question, pStageId: $pStageId)';
+    return 'InsCheckListQuestionAnswerModel(questionOption: $questionOption, question: $question, pStageId: $pStageId)';
   }
 }
 

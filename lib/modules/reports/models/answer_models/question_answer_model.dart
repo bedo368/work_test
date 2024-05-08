@@ -43,7 +43,7 @@ abstract class QuestionAnswerModel {
     } else if ((questionAndAnserData['question'] as QuestionModel).answerType ==
         'Dropdown') {
       return DropDownQuestionAnswerModel(
-          questionOptions: questionAndAnserData['answer'],
+          questionOption: questionAndAnserData['answer'],
           question: questionAndAnserData['question'],
           pStageId: pStageId);
     } else if ((questionAndAnserData['question'] as QuestionModel).answerType ==
@@ -61,7 +61,7 @@ abstract class QuestionAnswerModel {
     } else if ((questionAndAnserData['question'] as QuestionModel).answerType ==
         'Image') {
       return ImageQuestionAnswerModel(
-          questionOption: questionAndAnserData['answer'],
+          questionOptions: questionAndAnserData['answer'],
           question: questionAndAnserData['question'],
           pStageId: pStageId);
     } else if ((questionAndAnserData['question'] as QuestionModel).answerType ==

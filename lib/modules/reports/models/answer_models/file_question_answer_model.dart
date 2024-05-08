@@ -13,7 +13,7 @@ class FileQuestionAnswerModel extends QuestionAnswerModel {
 
   @override
   String toString() {
-    return 'TextQuestionAnswerModel(answer: $questionOption, question: $question, pStageId: $pStageId)';
+    return 'FileQuestion(questionOption: $questionOption, question: $question, pStageId: $pStageId)';
   }
 
   @override

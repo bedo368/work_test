@@ -4,10 +4,10 @@ import 'package:flutter_application_1/modules/reports/models/question_options_mo
 import 'package:hive/hive.dart';
 
 class DropDownQuestionAnswerModel extends QuestionAnswerModel {
-  final QuestionOptionsModel questionOptions;
+  final QuestionOptionsModel questionOption;
 
   DropDownQuestionAnswerModel({
-    required this.questionOptions,
+    required this.questionOption,
     required super.question,
     required super.pStageId,
   });
@@ -15,7 +15,7 @@ class DropDownQuestionAnswerModel extends QuestionAnswerModel {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'questionOptions': questionOptions.toMap(),
+      'questionOptions': questionOption.toMap(),
       'question': question.toMap(),
       'pStageId': pStageId,
     };
@@ -23,7 +23,7 @@ class DropDownQuestionAnswerModel extends QuestionAnswerModel {
 
   static DropDownQuestionAnswerModel fromMap(Map<String, dynamic> map) {
     return DropDownQuestionAnswerModel(
-      questionOptions: QuestionOptionsModel.fromMap(map['questionOptions']),
+      questionOption: QuestionOptionsModel.fromMap(map['questionOptions']),
       question: QuestionModel.fromMap(map['question']),
       pStageId: map['pStageId'],
     );
@@ -35,7 +35,7 @@ class DropDownQuestionAnswerModel extends QuestionAnswerModel {
     String? pStageId,
   }) {
     return DropDownQuestionAnswerModel(
-      questionOptions: questionOptions ?? this.questionOptions,
+      questionOption: questionOptions ?? this.questionOption,
       question: question ?? this.question,
       pStageId: pStageId ?? this.pStageId,
     );
@@ -43,7 +43,7 @@ class DropDownQuestionAnswerModel extends QuestionAnswerModel {
 
   @override
   String toString() {
-    return 'DropDownQuestionAnswerModel(questionOptions: $questionOptions, question: $question, pStageId: $pStageId)';
+    return 'DropDownQuestionAnswerModel(questionOptions: $questionOption, question: $question, pStageId: $pStageId)';
   }
 }
 
@@ -59,7 +59,7 @@ class DropDownQuestionAnswerModelAdapter
     var pStageId = reader.read();
 
     return DropDownQuestionAnswerModel(
-      questionOptions: questionOptions,
+      questionOption: questionOptions,
       question: question,
       pStageId: pStageId,
     );
@@ -67,7 +67,7 @@ class DropDownQuestionAnswerModelAdapter
 
   @override
   void write(BinaryWriter writer, DropDownQuestionAnswerModel obj) {
-    writer.write<QuestionOptionsModel>(obj.questionOptions);
+    writer.write<QuestionOptionsModel>(obj.questionOption);
     writer.write<QuestionModel>(obj.question);
     writer.write(obj.pStageId);
   }
