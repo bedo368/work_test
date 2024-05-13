@@ -16,7 +16,7 @@ class QuestionsOptionDModel extends Equatable {
   final dynamic correctiveEN;
   final dynamic correctiveAR;
 
-  QuestionsOptionDModel({
+  const QuestionsOptionDModel({
     required this.qodID,
     required this.oID,
     required this.qData,

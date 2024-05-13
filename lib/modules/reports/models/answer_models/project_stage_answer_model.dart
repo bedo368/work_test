@@ -1,139 +1,119 @@
 import 'dart:developer';
 
-import 'package:flutter_application_1/modules/reports/models/answer_models/checkbox_question_answer_model.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/dropdwon_question_anser_model.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/file_question_answer_model.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/image_question_answer_model.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/ins_check_list_question_answer_model.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/observation_question_answer_model.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/question_answer_model.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/radio_question_answer_model.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/text_question_answer_model.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/user_select_question_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_section_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_for_question_option_answer_model.dart';
+
 import 'package:hive/hive.dart';
 
-class ProjectStageAnswerModel {
+class PStageAnswerModel {
   final String pStageId;
-  final List<QuestionAnswerModel> questionAnswers;
-  final String sectionId;
+  final List<PStageSectionAnswerModel> pStageSectionsAnswers;
+  final List<Map<String, dynamic>> imageRequiredForStageSections;
+  List<RequierdImageAnswerForQuetionOptionModel>
+      imageRequiredForStageSectionAnswer;
 
-  ProjectStageAnswerModel(
-      {required this.pStageId,
-      required this.questionAnswers,
-      required this.sectionId});
+  PStageAnswerModel({
+    required this.pStageId,
+    required this.pStageSectionsAnswers,
+    required this.imageRequiredForStageSections,
+    required this.imageRequiredForStageSectionAnswer,
+  });
 
   Map<String, dynamic> toMap() {
     return {
       'pStageId': pStageId,
-      'questionAnswers': questionAnswers.map((qa) => qa.toMap()).toList(),
-      'sectionId': sectionId
+      'pStageSectionsAnswers':
+          pStageSectionsAnswers.map((qa) => qa.toMap()).toList(),
     };
   }
 
-  static ProjectStageAnswerModel fromMap(Map<String, dynamic> map) {
-    return ProjectStageAnswerModel(
+  static PStageAnswerModel fromMap(Map<String, dynamic> map) {
+    return PStageAnswerModel(
         pStageId: map['pStageId'],
-        questionAnswers: List<QuestionAnswerModel>.from(
-          map['questionAnswers']
-              .map((qaMap) => QuestionAnswerModel.fromMap(qaMap)),
-        ),
-        sectionId: map['sectionId']);
+        pStageSectionsAnswers: map['pStageSectionsAnswers'],
+        imageRequiredForStageSections: [],
+        imageRequiredForStageSectionAnswer: []);
+  }
+
+  factory PStageAnswerModel.createWithImageRequired(
+      {required List<PStageSectionAnswerModel> sectionsAnswers}) {
+    List<Map<String, dynamic>> tImageRequired = [];
+
+    for (var se in sectionsAnswers) {
+      final l = se.getQuestionOptionWithReqiredImage();
+
+      tImageRequired.addAll(l);
+    }
+    return PStageAnswerModel(
+      pStageId: sectionsAnswers.first.pStageId,
+      pStageSectionsAnswers: sectionsAnswers,
+      imageRequiredForStageSections: tImageRequired,
+      imageRequiredForStageSectionAnswer: [],
+    );
+  }
+
+  int getImageRequiredCount() {
+    int n = 0;
+    for (var i in imageRequiredForStageSections) {
+      n += int.parse(i['imageReqiredCount']);
+    }
+    log(n.toString());
+    return n;
   }
 
   @override
   String toString() {
-    return 'ProjectStageAnserModel(pStageId: $pStageId, questionAnswers: $questionAnswers , sectionId:$sectionId)';
+    return 'ProjectStageAnserModel(pStageId: $pStageId, questionAnswers: $pStageSectionsAnswers ,imageRequiredForStageSection:  $imageRequiredForStageSections ,imageRequiredForStageSectionAnswer: $imageRequiredForStageSectionAnswer)';
   }
 
-  static ProjectStageAnswerModel fromString(String str) {
-    // Implement parsing logic if required
+  static PStageAnswerModel fromString(String str) {
     throw UnimplementedError('fromString method is not implemented');
   }
 
-  ProjectStageAnswerModel copyWith({
+  PStageAnswerModel copyWith({
     String? pStageId,
-    List<QuestionAnswerModel>? questionAnswers,
+    List<PStageSectionAnswerModel>? questionAnswers,
     String? sectionId,
   }) {
-    return ProjectStageAnswerModel(
-        pStageId: pStageId ?? this.pStageId,
-        questionAnswers: questionAnswers ?? this.questionAnswers,
-        sectionId: sectionId ?? this.sectionId);
+    return PStageAnswerModel(
+      pStageId: pStageId ?? this.pStageId,
+      pStageSectionsAnswers: questionAnswers ?? pStageSectionsAnswers,
+      imageRequiredForStageSections: imageRequiredForStageSections,
+      imageRequiredForStageSectionAnswer: imageRequiredForStageSectionAnswer,
+    );
   }
 
-  Future<void> storeInHive() async {
-    var box = Hive.box<ProjectStageAnswerModel>('projectStageAnswers');
-    box.add(this);
-  }
-
-  Future<ProjectStageAnswerModel?> getFormHive() async {
-    var box = Hive.box<ProjectStageAnswerModel>('projectStageAnswers');
-    return box.values.firstWhere((element) => element.sectionId == sectionId);
-  }
-
-  void printconvertToRequest() {
-    log('staart');
-    for (var qa in questionAnswers) {
-      log(' ${qa.question.answerType}  qid :${qa.question.qID}  ');
-
-      if (qa is CheckboxQuestionAnswerModel) {
-        log('option :${qa.questionOptions} ');
-      }
-
-      if (qa is TextQuestionAnswerModel) {
-        log('answer :${qa.answer} ');
-      }
-      if (qa is RadioQuestionAnswerModel) {
-        log('answer :${qa.questionOption} ');
-      }
-
-      if (qa is ImageQuestionAnswerModel) {
-        log('answer :${qa.questionOptions} ');
-      }
-      if (qa is FileQuestionAnswerModel) {
-        log('answer :${qa.questionOption} ');
-      }
-      if (qa is DropDownQuestionAnswerModel) {
-        log('answer :${qa.questionOption} ');
-      }
-      if (qa is UserSelectQuestionAnswerModel) {
-        log('questionOption  :${qa.questionOption}  , qustionOptionData : ${qa.questionOptionData}');
-      }
-      if (qa is InsCheckListQuestionAnswerModel) {
-        log('questionOption  :${qa.questionOption}  ');
-      }
-
-      if (qa is ObservationQuestionAnswerModel) {
-        log(' qoption   :${qa.questionOption}   , qoptionData : ${qa.questionOptionData}');
-      }
-      log('----------------------------question end----------------------------');
-    }
-    log('---------------------------------------------------section  end---------------------------------------------------------');
-  }
+  // Future<PStageAnswerModel?> getFormHive() async {
+  //   var box = Hive.box<PStageAnswerModel>('projectStageAnswers');
+  //   return box.values.firstWhere((element) => element.sectionId == sectionId);
+  // }
 }
 
-class ProjectStageAnserModelAdapter
-    extends TypeAdapter<ProjectStageAnswerModel> {
+class ProjectStageAnserModelAdapter extends TypeAdapter<PStageAnswerModel> {
   @override
-  final int typeId = 8;
+  final int typeId = 55;
 
   @override
-  ProjectStageAnswerModel read(BinaryReader reader) {
+  PStageAnswerModel read(BinaryReader reader) {
     var pStageId = reader.readString();
     var questionAnswers = reader.readList();
-    var sectionId = reader.readString();
+    var imageRequiredForStageSection1 = reader.readList();
+    var imageRequiredForStageSectionAnswer1 = reader.readList();
 
-    return ProjectStageAnswerModel(
+    return PStageAnswerModel(
       pStageId: pStageId,
-      questionAnswers: questionAnswers.cast<QuestionAnswerModel>(),
-      sectionId: sectionId,
+      pStageSectionsAnswers: questionAnswers.cast<PStageSectionAnswerModel>(),
+      imageRequiredForStageSections: imageRequiredForStageSection1.cast(),
+      imageRequiredForStageSectionAnswer:
+          imageRequiredForStageSectionAnswer1.cast(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, ProjectStageAnswerModel obj) {
+  void write(BinaryWriter writer, PStageAnswerModel obj) {
     writer.writeString(obj.pStageId);
-    writer.writeList(obj.questionAnswers);
-    writer.writeString(obj.sectionId);
+    writer.writeList(obj.pStageSectionsAnswers);
+    writer.writeList(obj.imageRequiredForStageSections);
+    writer.writeList(obj.imageRequiredForStageSectionAnswer);
   }
 }

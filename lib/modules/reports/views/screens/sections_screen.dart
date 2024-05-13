@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/reports/controllers/questin_cubit/question_cubit.dart';
 import 'package:flutter_application_1/modules/reports/controllers/section_cubit/sections_cubit.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_section_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/stage_models.dart';
 import 'package:flutter_application_1/modules/reports/views/screens/questions_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,10 +23,25 @@ class _SectionScreenState extends State<SectionScreen> {
   int sectionNom = 0;
   int tempanswerdSectionNOm = 0;
   final ValueNotifier<int> answerdSectionNOm = ValueNotifier<int>(0);
-  final box = Hive.box<ProjectStageAnswerModel>('projectStageAnswers');
+  final box = Hive.box<PStageAnswerModel>('PSTAGEANWER');
+
+  bool isDone = false;
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final stagesForThisPStageId = box.get(widget.pStageId);
+      if (stagesForThisPStageId != null) {
+        Future.delayed(Duration.zero).then((value) {
+          answerdSectionNOm.value =
+              stagesForThisPStageId.pStageSectionsAnswers.length;
+          if (stagesForThisPStageId.getImageRequiredCount() ==
+              stagesForThisPStageId.imageRequiredForStageSectionAnswer.length) {
+            isDone = true;
+          }
+        });
+      }
+    });
     super.initState();
   }
 
@@ -44,11 +60,11 @@ class _SectionScreenState extends State<SectionScreen> {
               floatingActionButton: ValueListenableBuilder<int>(
                   valueListenable: answerdSectionNOm,
                   builder: (context, value, w) {
-                    return value == sectionNom
+                    return value == sectionNom && isDone
                         ? ElevatedButton(
                             child: const Text('show Stored '),
                             onPressed: () {
-                              final box = Hive.box<ProjectStageAnswerModel>(
+                              final box = Hive.box<PStageSectionAnswerModel>(
                                   'projectStageAnswers');
 
                               final stagesForThisPStageId = box.values
@@ -67,19 +83,17 @@ class _SectionScreenState extends State<SectionScreen> {
               ),
               body: ListView.separated(
                   itemBuilder: (context, index) {
-                    final pStages = box.values.toList();
-                    int isAnswerd = pStages.indexWhere((element) =>
-                        element.sectionId ==
-                            sectionCubit.section[index].sectionID &&
-                        element.pStageId == widget.pStageId);
+                    final pStageAnswer = box.get(widget.pStageId);
+                    bool isAnswerd = false;
 
-                    if (isAnswerd != -1 && tempanswerdSectionNOm < sectionNom) {
-                      tempanswerdSectionNOm += 1;
-
-                      if (index == sectionCubit.section.length - 1) {
-                        Future.delayed(Duration.zero).then((value) {
-                          answerdSectionNOm.value = tempanswerdSectionNOm;
-                        });
+                    if (pStageAnswer == null) {
+                      isAnswerd = false;
+                    } else {
+                      for (var q in pStageAnswer.pStageSectionsAnswers) {
+                        if (q.sectionId ==
+                            sectionCubit.section[index].sectionID) {
+                          isAnswerd = true;
+                        }
                       }
                     }
 
@@ -87,7 +101,7 @@ class _SectionScreenState extends State<SectionScreen> {
                         ? const CircularProgressIndicator()
                         : TextButton(
                             onPressed: () {
-                              if (isAnswerd != -1) {
+                              if (isAnswerd == true) {
                                 return;
                               }
                               Navigator.of(context)
@@ -104,15 +118,13 @@ class _SectionScreenState extends State<SectionScreen> {
                                               pStageId: widget.pStageId,
                                             ),
                                           )))
-                                  .then((value) {
-                                print('fsadfasdfasdfads');
-                              });
+                                  .then((value) {});
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(sectionCubit.section[index].sectionName),
-                                isAnswerd == -1
+                                isAnswerd == false
                                     ? const SizedBox()
                                     : const Icon(Icons.check),
                               ],

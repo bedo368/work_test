@@ -11,7 +11,9 @@ import 'package:flutter_application_1/modules/reports/models/answer_models/image
 import 'package:flutter_application_1/modules/reports/models/answer_models/ins_check_list_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/observation_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_section_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/radio_question_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_for_question_option_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/text_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/user_select_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_model.dart';
@@ -67,8 +69,8 @@ class FetchAllAndStoreInLocalStorage {
         .isAdapterRegistered(CheckboxQuestionAnswerModelAdapter().typeId)) {
       _hive.registerAdapter(CheckboxQuestionAnswerModelAdapter());
     }
-    if (!_hive.isAdapterRegistered(ProjectStageAnserModelAdapter().typeId)) {
-      _hive.registerAdapter(ProjectStageAnserModelAdapter());
+    if (!_hive.isAdapterRegistered(PStageSectionAnswerModelAdapter().typeId)) {
+      _hive.registerAdapter(PStageSectionAnswerModelAdapter());
     }
     if (!_hive.isAdapterRegistered(RadioQuestionAnswerModelAdapter().typeId)) {
       _hive.registerAdapter(RadioQuestionAnswerModelAdapter());
@@ -98,6 +100,14 @@ class FetchAllAndStoreInLocalStorage {
         .isAdapterRegistered(DropDownQuestionAnswerModelAdapter().typeId)) {
       _hive.registerAdapter(DropDownQuestionAnswerModelAdapter());
     }
+    if (!_hive.isAdapterRegistered(ProjectStageAnserModelAdapter().typeId)) {
+      _hive.registerAdapter(ProjectStageAnserModelAdapter());
+    }
+    if (!_hive.isAdapterRegistered(
+        RequierdImageAnswerForQuetionOptionModelAdapter().typeId)) {
+      _hive.registerAdapter(RequierdImageAnswerForQuetionOptionModelAdapter());
+    }
+    await Hive.openBox<PStageAnswerModel>('PSTAGEANWER');
   }
 
   static Future<void> _fetchAll() async {
@@ -109,6 +119,7 @@ class FetchAllAndStoreInLocalStorage {
         _questApiRepo.getAllQuestionOptions(),
         _questApiRepo.getAllQuestionOptionsData(),
       ]);
+      log(res.toString());
 
       if (res[0] is StagesDataModel) {
         _storeSatgeInHive((res[0] as StagesDataModel).stages.values.toList());
@@ -199,7 +210,7 @@ class FetchAllAndStoreInLocalStorage {
       await sectionBox.addAll(s);
     }
     final box =
-        await _hive.openBox<ProjectStageAnswerModel>('projectStageAnswers');
+        await _hive.openBox<PStageSectionAnswerModel>('projectStageAnswers');
     log('${box.values}');
   }
 

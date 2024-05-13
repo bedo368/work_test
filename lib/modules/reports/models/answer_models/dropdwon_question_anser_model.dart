@@ -35,7 +35,7 @@ class DropDownQuestionAnswerModel extends QuestionAnswerModel {
     String? pStageId,
   }) {
     return DropDownQuestionAnswerModel(
-      questionOption: questionOptions ?? this.questionOption,
+      questionOption: questionOptions ?? questionOption,
       question: question ?? this.question,
       pStageId: pStageId ?? this.pStageId,
     );
