@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/reports/controllers/questin_cubit/question_cubit.dart';
 import 'package:flutter_application_1/modules/reports/controllers/section_cubit/sections_cubit.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_answer_model.dart';
-import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_section_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_question_model.dart';
 import 'package:flutter_application_1/modules/reports/models/stage_models.dart';
 import 'package:flutter_application_1/modules/reports/views/screens/image_required_questions_screen.dart';
