@@ -1,10 +1,13 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/modules/reports/controllers/questin_cubit/question_cubit.dart';
 import 'package:flutter_application_1/modules/reports/controllers/section_cubit/sections_cubit.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_section_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_question_model.dart';
 import 'package:flutter_application_1/modules/reports/models/stage_models.dart';
+import 'package:flutter_application_1/modules/reports/views/screens/image_required_questions_screen.dart';
 import 'package:flutter_application_1/modules/reports/views/screens/questions_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -23,7 +26,7 @@ class _SectionScreenState extends State<SectionScreen> {
   int tempanswerdSectionNOm = 0;
   final ValueNotifier<int> answerdSectionNOm = ValueNotifier<int>(0);
   final box = Hive.box<PStageAnswerModel>('PSTAGEANWER');
-
+  List<RequiredImageModel> imageRequiredList = [];
   bool isDone = false;
 
   @override
@@ -31,14 +34,18 @@ class _SectionScreenState extends State<SectionScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final stagesForThisPStageId = box.get(widget.pStageId);
       if (stagesForThisPStageId != null) {
-        Future.delayed(Duration.zero).then((value) {
-          answerdSectionNOm.value =
-              stagesForThisPStageId.pStageSectionsAnswers.length;
-          if (stagesForThisPStageId.getImageRequiredCount() ==
-              stagesForThisPStageId.imageRequiredForStageSectionAnswer.length) {
-            isDone = true;
-          }
-        });
+        imageRequiredList = stagesForThisPStageId.imageRequiredForStageSections;
+
+        answerdSectionNOm.value =
+            stagesForThisPStageId.pStageSectionsAnswers.length;
+        log('stagesForThisPStageId.getImageRequiredCount ${stagesForThisPStageId.getImageRequiredCount().toString()}');
+        log('----------');
+        log(stagesForThisPStageId.imageRequiredForStageSectionAnswer.length
+            .toString());
+        if (stagesForThisPStageId.getImageRequiredCount() ==
+            stagesForThisPStageId.imageRequiredForStageSectionAnswer.length) {
+          isDone = true;
+        }
       }
     });
     super.initState();
@@ -54,6 +61,11 @@ class _SectionScreenState extends State<SectionScreen> {
           builder: (context, state) {
             final sectionCubit = context.read<SectionsCubit>();
             sectionNom = sectionCubit.section.length;
+            log(sectionNom.toString());
+            log(answerdSectionNOm.value.toString());
+            if (sectionNom != answerdSectionNOm.value) {
+              isDone = false;
+            }
 
             return Scaffold(
               floatingActionButton: ValueListenableBuilder<int>(
@@ -63,16 +75,9 @@ class _SectionScreenState extends State<SectionScreen> {
                         ? ElevatedButton(
                             child: const Text('show Stored '),
                             onPressed: () {
-                              final box = Hive.box<PStageSectionAnswerModel>(
-                                  'projectStageAnswers');
-
-                              final stagesForThisPStageId = box.values
-                                  .where((element) =>
-                                      element.pStageId == widget.pStageId)
-                                  .toList();
-                              for (var e in stagesForThisPStageId) {
-                                e.printconvertToRequest();
-                              }
+                              final stagesForThisPStageId =
+                                  box.get(widget.pStageId);
+                              log(stagesForThisPStageId!.toString());
                             },
                           )
                         : const SizedBox();
@@ -85,54 +90,99 @@ class _SectionScreenState extends State<SectionScreen> {
                     final pStageAnswer = box.get(widget.pStageId);
                     bool isAnswerd = false;
 
-                    if (pStageAnswer == null) {
-                      isAnswerd = false;
-                    } else {
-                      for (var q in pStageAnswer.pStageSectionsAnswers) {
-                        if (q.sectionId ==
-                            sectionCubit.section[index].sectionID) {
-                          isAnswerd = true;
+                    if (index < sectionCubit.section.length) {
+                      if (pStageAnswer == null) {
+                        isAnswerd = false;
+                      } else {
+                        for (var q in pStageAnswer.pStageSectionsAnswers) {
+                          if (q.sectionId ==
+                              sectionCubit.section[index].sectionID) {
+                            isAnswerd = true;
+                          }
                         }
                       }
                     }
 
                     return state is SectionsLoadingState
                         ? const CircularProgressIndicator()
-                        : TextButton(
-                            onPressed: () {
-                              if (isAnswerd == true) {
-                                return;
-                              }
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                      builder: (contet) => BlocProvider(
-                                            create: (context) => QuestionCubit()
-                                              ..fetchQuestionAndQutionDataBySectionId(
-                                                sectionId: sectionCubit
-                                                    .section[index].sectionID,
+                        : index < sectionCubit.section.length
+                            ? TextButton(
+                                onPressed: () {
+                                  if (isAnswerd == true) {
+                                    return;
+                                  }
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (contet) => BlocProvider(
+                                                create: (context) => QuestionCubit()
+                                                  ..fetchQuestionAndQutionDataBySectionId(
+                                                    sectionId: sectionCubit
+                                                        .section[index]
+                                                        .sectionID,
+                                                  ),
+                                                child: QuestionScreen(
+                                                  section: sectionCubit
+                                                      .section[index],
+                                                  pStageId: widget.pStageId,
+                                                ),
+                                              )))
+                                      .then((value) {});
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(sectionCubit
+                                        .section[index].sectionName),
+                                    isAnswerd == false
+                                        ? const SizedBox()
+                                        : const Icon(Icons.check),
+                                  ],
+                                ))
+                            : ValueListenableBuilder<int>(
+                                valueListenable: answerdSectionNOm,
+                                builder: (context, value, w) {
+                                  return TextButton(
+                                      onPressed: () {
+                                        log(value.toString());
+                                        log(sectionNom.toString());
+
+                                        // if ((!isDone && value < sectionNom)) {
+                                        //   return;
+                                        // }
+                                        if (isDone) {
+                                          return;
+                                        }
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                              builder: (contet) =>
+                                                  ImageRequredQuestionScreen(
+                                                stage: widget.stage,
+                                                pStageId: widget.pStageId,
+                                                imageQuestion:
+                                                    imageRequiredList,
                                               ),
-                                            child: QuestionScreen(
-                                              section:
-                                                  sectionCubit.section[index],
-                                              pStageId: widget.pStageId,
-                                            ),
-                                          )))
-                                  .then((value) {});
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(sectionCubit.section[index].sectionName),
-                                isAnswerd == false
-                                    ? const SizedBox()
-                                    : const Icon(Icons.check),
-                              ],
-                            ));
+                                            ))
+                                            .then((value) {});
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text('image for all sections'),
+                                          value < sectionNom
+                                              ? const Icon(Icons.cancel)
+                                              : isDone
+                                                  ? const Icon(Icons.check)
+                                                  : const SizedBox()
+                                        ],
+                                      ));
+                                });
                   },
                   separatorBuilder: (context, index) {
                     return const Divider();
                   },
-                  itemCount: sectionCubit.section.length),
+                  itemCount: sectionCubit.section.length + 1),
             );
           },
         ));

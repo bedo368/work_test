@@ -2,13 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_section_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_for_question_option_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_question_model.dart';
 
 import 'package:hive/hive.dart';
 
 class PStageAnswerModel {
   final String pStageId;
   final List<PStageSectionAnswerModel> pStageSectionsAnswers;
-  final List<Map<String, dynamic>> imageRequiredForStageSections;
+  final List<RequiredImageModel> imageRequiredForStageSections;
   List<RequierdImageAnswerForQuetionOptionModel>
       imageRequiredForStageSectionAnswer;
 
@@ -36,8 +37,9 @@ class PStageAnswerModel {
   }
 
   factory PStageAnswerModel.createWithImageRequired(
-      {required List<PStageSectionAnswerModel> sectionsAnswers}) {
-    List<Map<String, dynamic>> tImageRequired = [];
+      {required List<PStageSectionAnswerModel> sectionsAnswers,
+      List<RequierdImageAnswerForQuetionOptionModel>? reqiredImageanswers}) {
+    List<RequiredImageModel> tImageRequired = [];
 
     for (var se in sectionsAnswers) {
       final l = se.getQuestionOptionWithReqiredImage();
@@ -48,17 +50,17 @@ class PStageAnswerModel {
       pStageId: sectionsAnswers.first.pStageId,
       pStageSectionsAnswers: sectionsAnswers,
       imageRequiredForStageSections: tImageRequired,
-      imageRequiredForStageSectionAnswer: [],
+      imageRequiredForStageSectionAnswer: reqiredImageanswers ?? [],
     );
   }
 
   int getImageRequiredCount() {
-    int n = 0;
-    for (var i in imageRequiredForStageSections) {
-      n += int.parse(i['imageReqiredCount']);
-    }
-    log(n.toString());
-    return n;
+    // int n = 0;
+    // for (var i in imageRequiredForStageSections) {
+    //   n += i.imageCount;
+    // }
+    // log(n.toString());
+    return imageRequiredForStageSections.length;
   }
 
   @override

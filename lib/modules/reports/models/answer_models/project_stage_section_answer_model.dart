@@ -8,6 +8,7 @@ import 'package:flutter_application_1/modules/reports/models/answer_models/ins_c
 import 'package:flutter_application_1/modules/reports/models/answer_models/observation_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/radio_question_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_question_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/text_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/user_select_question_answer_model.dart';
 import 'package:hive/hive.dart';
@@ -30,8 +31,8 @@ class PStageSectionAnswerModel {
     };
   }
 
-  List<Map<String, dynamic>> getQuestionOptionWithReqiredImage() {
-    final List<Map<String, dynamic>> questionAnswersList = [];
+  List<RequiredImageModel> getQuestionOptionWithReqiredImage() {
+    final List<RequiredImageModel> questionAnswersList = [];
 
     for (var qa in questionAnswers) {
       if (qa is ObservationQuestionAnswerModel) {
@@ -39,11 +40,10 @@ class PStageSectionAnswerModel {
           if (qo.imagesCounter != null &&
               qo.imagesCounter != '0' &&
               qo.imagesCounter != 0) {
-            questionAnswersList.add({
-              'question': qa.question,
-              'questionOptionId': qo.qOID,
-              'imageReqiredCount': qo.imagesCounter
-            });
+            questionAnswersList.add(RequiredImageModel(
+                question: qa.question,
+                questionOption: qo,
+                imageCount: int.parse(qo.imagesCounter)));
           }
         }
       }
@@ -51,22 +51,20 @@ class PStageSectionAnswerModel {
         if (qa.questionOption.imagesCounter != null &&
             qa.questionOption.imagesCounter != '0' &&
             qa.questionOption.imagesCounter != 0) {
-          questionAnswersList.add({
-            'question': qa.question,
-            'questionOptionId': qa.questionOption.qOID,
-            'imageReqiredCount': qa.questionOption.imagesCounter
-          });
+          questionAnswersList.add(RequiredImageModel(
+              question: qa.question,
+              questionOption: qa.questionOption,
+              imageCount: int.parse(qa.questionOption.imagesCounter)));
         }
       }
       if (qa is InsCheckListQuestionAnswerModel) {
         if (qa.questionOption.imagesCounter != null &&
             qa.questionOption.imagesCounter != '0' &&
             qa.questionOption.imagesCounter != 0) {
-          questionAnswersList.add({
-            'question': qa.question,
-            'questionOptionId': qa.questionOption.qOID,
-            'imageReqiredCount': qa.questionOption.imagesCounter
-          });
+          questionAnswersList.add(RequiredImageModel(
+              question: qa.question,
+              questionOption: qa.questionOption,
+              imageCount: int.parse(qa.questionOption.imagesCounter)));
         }
       }
     }

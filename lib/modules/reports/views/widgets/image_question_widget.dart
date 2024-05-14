@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_for_question_option_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_question_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_options_model.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,12 +11,16 @@ class ImageQuestionWidget extends StatefulWidget {
   const ImageQuestionWidget({
     super.key,
     required this.question,
-    required this.questionOptions,
     required this.onSelected,
+    this.questionOptions,
+    this.imageCountForImageRequired,
+    this.questionOption,
   });
   final QuestionModel question;
-  final List<QuestionOptionsModel> questionOptions;
+  final List<QuestionOptionsModel>? questionOptions;
+  final QuestionOptionsModel? questionOption;
   final Function(dynamic quetionInfo) onSelected;
+  final int? imageCountForImageRequired;
 
   @override
   State<ImageQuestionWidget> createState() => _ImageQuestionWidgetState();
@@ -28,7 +36,12 @@ class _ImageQuestionWidgetState extends State<ImageQuestionWidget>
 
   @override
   void initState() {
-    imageNum = int.parse(widget.questionOptions.first.imagesCounter);
+    if (widget.questionOptions != null) {
+      imageNum = int.parse(widget.questionOptions!.first.imagesCounter);
+    }
+    if (widget.imageCountForImageRequired != null) {
+      imageNum = widget.imageCountForImageRequired!;
+    }
     super.initState();
   }
 
@@ -42,11 +55,19 @@ class _ImageQuestionWidgetState extends State<ImageQuestionWidget>
     if (pickedImage != null && imageList.length < imageNum) {
       setState(() {
         imageList.add(pickedImage.path);
-
-        if (imageList.length == imageNum) {
-          widget.onSelected({'question': widget.question, 'answer': imageList});
-        }
       });
+      if (imageList.length == imageNum &&
+          widget.imageCountForImageRequired == null) {
+        widget.onSelected({'question': widget.question, 'answer': imageList});
+      }
+      if (imageList.length == imageNum &&
+          (widget.imageCountForImageRequired != null &&
+              widget.questionOption != null)) {
+        widget.onSelected(RequierdImageAnswerForQuetionOptionModel(
+            imagePathsList: imageList,
+            question: widget.question,
+            questionOption: widget.questionOption!));
+      }
     }
   }
 
@@ -59,9 +80,12 @@ class _ImageQuestionWidgetState extends State<ImageQuestionWidget>
       children: [
         ListTile(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: widget.imageCountForImageRequired == null
+                ? MainAxisAlignment.spaceBetween
+                : MainAxisAlignment.center,
             children: [
-              Expanded(child: Text(widget.question.qTitle)),
+              if (widget.imageCountForImageRequired == null)
+                Expanded(child: Text(widget.question.qTitle)),
               widget.question.required != '1'
                   ? const Align(
                       alignment: Alignment.topRight,
@@ -79,8 +103,16 @@ class _ImageQuestionWidgetState extends State<ImageQuestionWidget>
                     if (imageList.length >= imageNum) {
                       setState(() {
                         imageList.clear();
-                        widget.onSelected(
-                            {'question': widget.question, 'answer': null});
+
+                        if ((widget.imageCountForImageRequired != null &&
+                            widget.questionOption != null)) {
+                          widget.onSelected(widget.question);
+                          return;
+                        }
+                        if (widget.imageCountForImageRequired == null) {
+                          widget.onSelected(
+                              {'question': widget.question, 'answer': null});
+                        }
                       });
                     } else {
                       _pickImage(ImageSource.gallery);
@@ -88,7 +120,8 @@ class _ImageQuestionWidgetState extends State<ImageQuestionWidget>
                   },
                   child: Row(
                     children: [
-                      Text('${imageNum - imageList.length}'),
+                      Text(
+                          '${widget.imageCountForImageRequired == null ? imageNum - imageList.length : widget.imageCountForImageRequired! - imageList.length}'),
                       Icon(imageList.length < imageNum
                           ? Icons.image
                           : Icons.cancel),

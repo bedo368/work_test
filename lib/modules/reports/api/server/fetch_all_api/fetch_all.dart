@@ -14,6 +14,7 @@ import 'package:flutter_application_1/modules/reports/models/answer_models/proje
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_section_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/radio_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_for_question_option_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_question_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/text_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/user_select_question_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/question_model.dart';
@@ -107,6 +108,10 @@ class FetchAllAndStoreInLocalStorage {
         RequierdImageAnswerForQuetionOptionModelAdapter().typeId)) {
       _hive.registerAdapter(RequierdImageAnswerForQuetionOptionModelAdapter());
     }
+    if (!_hive.isAdapterRegistered(RequiredImageModelAdapter().typeId)) {
+      _hive.registerAdapter(RequiredImageModelAdapter());
+    }
+
     await Hive.openBox<PStageAnswerModel>('PSTAGEANWER');
   }
 

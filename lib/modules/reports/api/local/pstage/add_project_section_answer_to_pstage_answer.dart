@@ -1,5 +1,6 @@
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_answer_model.dart';
 import 'package:flutter_application_1/modules/reports/models/answer_models/project_stage_section_answer_model.dart';
+import 'package:flutter_application_1/modules/reports/models/answer_models/requierd_image_for_question_option_answer_model.dart';
 import 'package:hive/hive.dart';
 
 Future<PStageAnswerModel?> addPStageSectionAnswerToPStageAnswer({
@@ -25,7 +26,8 @@ Future<PStageAnswerModel?> addPStageSectionAnswerToPStageAnswer({
       box.put(
           pstagId,
           PStageAnswerModel.createWithImageRequired(
-              sectionsAnswers: oldSection));
+            sectionsAnswers: oldSection,
+          ));
       return pStageAnswerModel;
     }
   } catch (e) {
